@@ -118,6 +118,13 @@ describe("generateForecast", () => {
   });
 
   it("caches forecast results", async () => {
+    const cacheStore = new Map();
+    const cacheMod = await import("@/lib/analysis/cache");
+    vi.mocked(cacheMod.getCached).mockImplementation((key: string) => cacheStore.get(key) || null);
+    vi.mocked(cacheMod.setCached).mockImplementation((key: string, val: any) => {
+      cacheStore.set(key, val);
+    });
+
     (prisma.transaction.findMany as any).mockResolvedValueOnce([]);
     (prisma.transaction.groupBy as any).mockResolvedValueOnce([]);
 
@@ -136,6 +143,10 @@ describe("generateForecast", () => {
     });
 
     expect(first.generatedAt).toBe(second.generatedAt);
+    
+    // Restore default mock behaviors
+    vi.mocked(cacheMod.getCached).mockImplementation(() => null);
+    vi.mocked(cacheMod.setCached).mockImplementation(() => {});
   });
 });
 
