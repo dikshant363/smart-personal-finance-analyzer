@@ -5,4 +5,5 @@ export { createApplicationBackup } from "./backup";
 export { restoreApplicationBackup } from "./restore";
 export type { RestoreOptions, RestoreSummary } from "./restore";
 export type { ApplicationBackupPayload } from "./backup";
-export type { Db } from "./validation";
+export { validateDisasterRecoveryIntegrity } from "./reliability";
+export type { ReliabilityReport } from "./reliability";
