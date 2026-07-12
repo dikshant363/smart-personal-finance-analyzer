@@ -1,8 +1,8 @@
 import { describe, it, expect, vi, beforeEach } from "vitest";
 import { generateForecast, runSimulation, detectRisks } from "./engine";
-import { prisma } from "@/lib/prisma";
+import { prisma } from "../prisma";
 
-vi.mock("@/lib/prisma", () => ({
+vi.mock("../prisma", () => ({
   prisma: {
     $queryRaw: vi.fn().mockImplementation((queryArgs: any) => {
       const sql = String(queryArgs?.[0] || "");
@@ -32,11 +32,11 @@ vi.mock("@/lib/prisma", () => ({
   },
 }));
 
-vi.mock("@/lib/score/engine", () => ({
+vi.mock("../score/engine", () => ({
   calculateHealthScore: vi.fn(() => Promise.resolve(null)),
 }));
 
-vi.mock("@/lib/analysis/cache", () => ({
+vi.mock("../analysis/cache", () => ({
   getCached: vi.fn(() => null),
   setCached: vi.fn(),
   cacheKey: vi.fn((userId: string, scope: string) => `${userId}:${scope}`),

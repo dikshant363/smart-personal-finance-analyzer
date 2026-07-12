@@ -77,6 +77,8 @@ function ScenarioCard({
   );
 }
 
+const scenarios = ["best", "expected", "worst"] as const;
+
 export function ScenarioComparison({
   userId,
   period,
@@ -92,7 +94,6 @@ export function ScenarioComparison({
     Record<string, { endValue: number; changePercent: number }>
   >({});
   const [loading, setLoading] = React.useState(true);
-  const scenarios = ["best", "expected", "worst"] as const;
 
   React.useEffect(() => {
     let cancelled = false;

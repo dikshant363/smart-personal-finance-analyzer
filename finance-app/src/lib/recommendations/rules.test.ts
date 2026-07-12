@@ -1,7 +1,7 @@
 import { describe, it, expect } from "vitest";
 import { generateRuleRecommendations } from "./rules";
-import type { ScoreResult } from "@/lib/score/types";
-import type { AnalysisResult } from "@/lib/analysis/types";
+import type { ScoreResult } from "../score/types";
+import type { AnalysisResult } from "../analysis/types";
 
 describe("generateRuleRecommendations", () => {
   it("produces savings and budget recs from score + alerts", () => {

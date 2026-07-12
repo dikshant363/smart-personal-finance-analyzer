@@ -30,7 +30,7 @@ export function AiInsightsFeed({ userId }: { userId: string }) {
     } finally {
       setLoading(false);
     }
-  }, [userId]);
+  }, []);
 
   React.useEffect(() => {
     fetchInsights();
