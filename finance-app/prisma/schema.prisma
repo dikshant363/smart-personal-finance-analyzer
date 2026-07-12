@@ -66,6 +66,7 @@ model User {
   syncHistories         SyncHistory[]
   workspaceMembers      WorkspaceMember[]
   workspaceInvitations  WorkspaceInvitation[]
+  conversations         Conversation[]
 }
 
 model Goal {
@@ -639,4 +640,28 @@ model ActivityLog {
   createdAt   DateTime  @default(now())
 
   @@index([workspaceId])
+}
+
+model Conversation {
+  id        String    @id @default(cuid())
+  userId    String
+  user      User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  title     String    @default("New Chat")
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+  messages  Message[]
+
+  @@index([userId])
+}
+
+model Message {
+  id             String       @id @default(cuid())
+  conversationId String
+  conversation   Conversation @relation(fields: [conversationId], references: [id], onDelete: Cascade)
+  role           String       // "user" | "assistant"
+  content        String
+  feedback       String?      // "Like" | "Dislike"
+  createdAt      DateTime     @default(now())
+
+  @@index([conversationId])
 }
