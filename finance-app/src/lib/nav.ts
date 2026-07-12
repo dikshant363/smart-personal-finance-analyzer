@@ -4,6 +4,7 @@ export const navItems: NavItem[] = [
   { href: "/dashboard", label: "Dashboard", icon: "LayoutDashboard" },
   { href: "/timeline", label: "Timeline", icon: "Calendar" },
   { href: "/scenarios", label: "Scenario Simulator", icon: "TrendingUp" },
+  { href: "/net-worth", label: "Net Worth", icon: "LineChart" },
   { href: "/transactions", label: "Transactions", icon: "ArrowLeftRight" },
   { href: "/categories", label: "Categories", icon: "Tags" },
   { href: "/budgets", label: "Budgets", icon: "Wallet" },

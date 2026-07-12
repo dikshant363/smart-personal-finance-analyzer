@@ -33,6 +33,7 @@ import GoalsWidget from "@/components/goals/goals-widget";
 import EmergencyWidget from "@/components/emergency-fund/emergency-widget";
 import RecurringWidget from "@/components/recurring/recurring-widget";
 import TimelineWidget from "@/components/timeline/timeline-widget";
+import NetWorthWidget from "@/components/asset/net-worth-widget";
 
 export default async function DashboardPage() {
   const user = await getCurrentUser();
@@ -313,6 +314,15 @@ export default async function DashboardPage() {
         </CardHeader>
         <CardContent>
           <EmergencyWidget currency={currency} />
+        </CardContent>
+      </Card>
+
+      <Card>
+        <CardHeader>
+          <CardTitle>Net Worth & Asset Overview</CardTitle>
+        </CardHeader>
+        <CardContent>
+          <NetWorthWidget currency={currency} />
         </CardContent>
       </Card>
 

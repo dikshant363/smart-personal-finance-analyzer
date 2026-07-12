@@ -59,6 +59,7 @@ model User {
   workflowJobs          WorkflowJob[]
   workflowHistory       WorkflowHistory[]
   financialScenarios    FinancialScenario[]
+  assets                Asset[]
 }
 
 model Goal {
@@ -432,6 +433,27 @@ model FinancialScenario {
   status                String   @default("Draft") // "Draft", "Planned", "Active", "Completed", "Archived", "Cancelled"
   createdAt             DateTime @default(now())
   updatedAt             DateTime @updatedAt
+
+  @@index([userId])
+  @@index([userId, status])
+}
+
+model Asset {
+  id               String   @id @default(cuid())
+  userId           String
+  user             User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  name             String
+  type             String   // e.g. "Cash", "SavingsAccount", "CheckingAccount", "FixedDeposit", "Gold", "RealEstate", "Vehicle", "Stock", "MutualFund", "Crypto", "Custom"
+  currentValue     Decimal  @db.Decimal(18, 2)
+  purchaseValue    Decimal  @db.Decimal(18, 2)
+  purchaseDate     DateTime
+  appreciationRate Decimal  @db.Decimal(5, 2) // annual percentage, e.g. 5.50
+  currency         String   @default("USD")
+  ownership        String   @default("100") // owned percentage
+  status           String   @default("Active") // "Active", "Sold", "Archived"
+  notes            String?
+  createdAt        DateTime @default(now())
+  updatedAt        DateTime @updatedAt
 
   @@index([userId])
   @@index([userId, status])
