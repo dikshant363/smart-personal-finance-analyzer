@@ -32,6 +32,7 @@ import { AiInsightsFeed } from "@/components/ai-insights/ai-insights-feed";
 import GoalsWidget from "@/components/goals/goals-widget";
 import EmergencyWidget from "@/components/emergency-fund/emergency-widget";
 import RecurringWidget from "@/components/recurring/recurring-widget";
+import TimelineWidget from "@/components/timeline/timeline-widget";
 
 export default async function DashboardPage() {
   const user = await getCurrentUser();
@@ -321,6 +322,15 @@ export default async function DashboardPage() {
         </CardHeader>
         <CardContent>
           <RecurringWidget currency={currency} />
+        </CardContent>
+      </Card>
+
+      <Card>
+        <CardHeader>
+          <CardTitle>Upcoming Planning Timeline</CardTitle>
+        </CardHeader>
+        <CardContent>
+          <TimelineWidget currency={currency} />
         </CardContent>
       </Card>
 

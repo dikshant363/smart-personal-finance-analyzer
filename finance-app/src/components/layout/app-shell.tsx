@@ -18,6 +18,7 @@ import {
   FileText,
   Database,
   Cpu,
+  Calendar,
 } from "lucide-react";
 import { navItems } from "@/lib/nav";
 import { cn } from "@/lib/utils";
@@ -40,6 +41,7 @@ const iconMap = {
   FileText,
   Database,
   Cpu,
+  Calendar,
 } as const;
 
 type IconName = keyof typeof iconMap;
