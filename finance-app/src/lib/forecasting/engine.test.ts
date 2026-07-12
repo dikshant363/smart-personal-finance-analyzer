@@ -119,7 +119,7 @@ describe("generateForecast", () => {
 
   it("caches forecast results", async () => {
     const cacheStore = new Map();
-    const cacheMod = await import("@/lib/analysis/cache");
+    const cacheMod = await import("../analysis/cache");
     vi.mocked(cacheMod.getCached).mockImplementation((key: string) => cacheStore.get(key) || null);
     vi.mocked(cacheMod.setCached).mockImplementation((key: string, val: any) => {
       cacheStore.set(key, val);
