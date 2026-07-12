@@ -61,6 +61,8 @@ model User {
   financialScenarios    FinancialScenario[]
   assets                Asset[]
   liabilities           Liability[]
+  portfolios            Portfolio[]
+  accounts              Account[]
 }
 
 model Goal {
@@ -483,4 +485,39 @@ model Liability {
 
   @@index([userId])
   @@index([userId, status])
+}
+
+model Portfolio {
+  id          String    @id @default(cuid())
+  userId      String
+  user        User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  name        String    // e.g. "Personal", "Business", "Retirement"
+  description String?
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+  accounts    Account[]
+
+  @@index([userId])
+}
+
+model Account {
+  id             String     @id @default(cuid())
+  userId         String
+  user           User       @relation(fields: [userId], references: [id], onDelete: Cascade)
+  portfolioId    String?
+  portfolio      Portfolio? @relation(fields: [portfolioId], references: [id], onDelete: SetNull)
+  name           String     // e.g. "Cash Wallet", "Chase Savings", "Coinbase Crypto"
+  institution    String     // e.g. "Chase Bank", "Self"
+  type           String     // e.g. "CashWallet", "Checking", "Savings", "CreditCard", "Investment", "Crypto", "Custom"
+  currency       String     @default("USD")
+  openingBalance Decimal    @db.Decimal(18, 2)
+  currentBalance Decimal    @db.Decimal(18, 2)
+  status         String     @default("Active") // "Active", "Inactive", "Archived", "Closed", "PendingVerification"
+  owner          String     @default("Self")
+  metadata       String?    // JSON string description
+  createdAt      DateTime   @default(now())
+  updatedAt      DateTime   @updatedAt
+
+  @@index([userId])
+  @@index([portfolioId])
 }
