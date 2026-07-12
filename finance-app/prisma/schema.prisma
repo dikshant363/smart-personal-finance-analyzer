@@ -63,6 +63,7 @@ model User {
   liabilities           Liability[]
   portfolios            Portfolio[]
   accounts              Account[]
+  syncHistories         SyncHistory[]
 }
 
 model Goal {
@@ -531,4 +532,23 @@ model ExchangeRate {
   source       String   @default("Manual") // "Manual" or "Provider"
 
   @@index([fromCurrency, toCurrency, date])
+}
+
+model SyncHistory {
+  id              String    @id @default(cuid())
+  userId          String
+  user            User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  provider        String    // e.g. "MockProvider", "ManualCSV", "ManualJSON"
+  status          String    // "Started", "Completed", "Failed"
+  startedAt       DateTime  @default(now())
+  completedAt     DateTime?
+  durationMs      Int?
+  itemsImported   Int       @default(0)
+  duplicatesFound Int       @default(0)
+  warningsCount   Int       @default(0)
+  errorsCount     Int       @default(0)
+  logMessage      String?
+
+  @@index([userId])
+  @@index([userId, provider])
 }
