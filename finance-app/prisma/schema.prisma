@@ -58,6 +58,7 @@ model User {
   notifications         Notification[]
   workflowJobs          WorkflowJob[]
   workflowHistory       WorkflowHistory[]
+  financialScenarios    FinancialScenario[]
 }
 
 model Goal {
@@ -412,4 +413,26 @@ model WorkflowHistory {
   createdAt    DateTime @default(now())
 
   @@index([userId])
+}
+
+model FinancialScenario {
+  id                    String   @id @default(cuid())
+  userId                String
+  user                  User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  name                  String
+  type                  String   // e.g. "BuyHouse", "BuyVehicle", "Retirement", "Startup", etc.
+  description           String?
+  startDate             DateTime
+  durationMonths        Int
+  priority              String   // "high", "medium", "low"
+  assumptions           String?  // JSON stringified assumptions
+  estimatedCost         Decimal  @db.Decimal(18, 2)
+  expectedIncomeImpact  Decimal  @db.Decimal(18, 2)
+  expectedExpenseImpact Decimal  @db.Decimal(18, 2)
+  status                String   @default("Draft") // "Draft", "Planned", "Active", "Completed", "Archived", "Cancelled"
+  createdAt             DateTime @default(now())
+  updatedAt             DateTime @updatedAt
+
+  @@index([userId])
+  @@index([userId, status])
 }
