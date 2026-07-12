@@ -60,6 +60,7 @@ model User {
   workflowHistory       WorkflowHistory[]
   financialScenarios    FinancialScenario[]
   assets                Asset[]
+  liabilities           Liability[]
 }
 
 model Goal {
@@ -454,6 +455,31 @@ model Asset {
   notes            String?
   createdAt        DateTime @default(now())
   updatedAt        DateTime @updatedAt
+
+  @@index([userId])
+  @@index([userId, status])
+}
+
+model Liability {
+  id                 String   @id @default(cuid())
+  userId             String
+  user               User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  name               String
+  type               String   // e.g. "CreditCard", "PersonalLoan", "HomeLoan", "VehicleLoan", "EducationLoan", "Mortgage", "BNPL", "Custom"
+  originalAmount     Decimal  @db.Decimal(18, 2)
+  outstandingBalance Decimal  @db.Decimal(18, 2)
+  interestRate       Decimal  @db.Decimal(5, 2) // annual interest rate, e.g. 8.50
+  currency           String   @default("USD")
+  lender             String
+  emiAmount          Decimal  @db.Decimal(18, 2)
+  repaymentFrequency String   @default("Monthly") // "Monthly", "Weekly", "Biweekly"
+  nextDueDate        DateTime
+  startDate          DateTime
+  endDate            DateTime
+  status             String   @default("Active") // "Active", "Closed", "Paused", "Overdue", "Defaulted", "Refinanced"
+  notes              String?
+  createdAt          DateTime @default(now())
+  updatedAt          DateTime @updatedAt
 
   @@index([userId])
   @@index([userId, status])
