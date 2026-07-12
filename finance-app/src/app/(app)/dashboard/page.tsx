@@ -30,6 +30,7 @@ import { RecommendationsSummary } from "@/components/recommendations/recommendat
 import { RiskDetector } from "@/components/forecasting/risk-detector";
 import { AiInsightsFeed } from "@/components/ai-insights/ai-insights-feed";
 import GoalsWidget from "@/components/goals/goals-widget";
+import EmergencyWidget from "@/components/emergency-fund/emergency-widget";
 
 export default async function DashboardPage() {
   const user = await getCurrentUser();
@@ -301,6 +302,15 @@ export default async function DashboardPage() {
               })}
             </div>
           )}
+        </CardContent>
+      </Card>
+
+      <Card>
+        <CardHeader>
+          <CardTitle>Emergency Resilience</CardTitle>
+        </CardHeader>
+        <CardContent>
+          <EmergencyWidget currency={currency} />
         </CardContent>
       </Card>
 
