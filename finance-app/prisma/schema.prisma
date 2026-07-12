@@ -54,6 +54,7 @@ model User {
   recurringItems        RecurringItem[]
   notificationCandidates NotificationCandidate[]
   processedDocuments    ProcessedDocument[]
+  exchangeAudits        ExchangeAudit[]
 }
 
 model Goal {
@@ -346,4 +347,20 @@ model ProcessedDocument {
 
   @@index([userId])
   @@index([userId, status])
+}
+
+model ExchangeAudit {
+  id               String   @id @default(cuid())
+  userId           String
+  user             User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  action           String   // "IMPORT", "EXPORT", "BACKUP", "RESTORE"
+  format           String   // "CSV", "JSON", "PDF"
+  dataset          String   // "Transactions", "Categories", "All", etc.
+  status           String   // "success", "failed"
+  recordCount      Int      @default(0)
+  errorMessage     String?
+  createdAt        DateTime @default(now())
+
+  @@index([userId])
+  @@index([userId, action])
 }
