@@ -1,0 +1,230 @@
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+enum TransactionType {
+  Income
+  Expense
+}
+
+enum TransactionSource {
+  Manual
+  Import
+  Receipt
+}
+
+enum BudgetPeriod {
+  Weekly
+  Monthly
+  Yearly
+}
+
+enum Theme {
+  Light
+  Dark
+  System
+}
+
+model User {
+  id           String    @id @default(cuid())
+  email        String    @unique
+  passwordHash String
+  name         String?
+  createdAt    DateTime  @default(now())
+  updatedAt    DateTime  @updatedAt
+  deletedAt    DateTime?
+
+  profile      Profile?
+  settings     UserSettings?
+  categories   Category[]
+  transactions Transaction[]
+  budgets      Budget[]
+  scoreHistory ScoreHistory[]
+  recommendations Recommendation[]
+  forecasts      Forecast[]
+  aiInsights     AiInsight[]
+  goals          Goal[]
+}
+
+model Goal {
+  id             String   @id @default(cuid())
+  userId         String
+  user           User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  name           String
+  description    String?
+  targetAmount   Decimal  @db.Decimal(12, 2)
+  currentAmount  Decimal  @default(0) @db.Decimal(12, 2)
+  currency       String   @default("USD")
+  deadline       DateTime?
+  priority       String   @default("medium")
+  status         String   @default("active")
+  createdAt      DateTime @default(now())
+  updatedAt      DateTime @updatedAt
+
+  @@index([userId])
+  @@index([userId, status])
+}
+
+model Forecast {
+  id             String   @id @default(cuid())
+  userId         String
+  user           User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  period         String
+  scenario       String
+  type           String
+  data           Json
+  confidence     Float?
+  generatedAt    DateTime @default(now())
+  createdAt      DateTime @default(now())
+  updatedAt      DateTime @updatedAt
+
+  @@index([userId, period, scenario])
+}
+
+model AiInsight {
+  id             String   @id @default(cuid())
+  userId         String
+  user           User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  type           String
+  title          String
+  summary        String
+  detail         String
+  contextVersion String
+  promptVersion  String
+  confidence     Float
+  feedback       String?
+  dismissed      Boolean  @default(false)
+  generatedAt    DateTime @default(now())
+  createdAt      DateTime @default(now())
+  updatedAt      DateTime @updatedAt
+
+  @@index([userId, type])
+}
+
+model Profile {
+  id        String   @id @default(cuid())
+  userId    String   @unique
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  currency  String   @default("USD")
+  timezone  String   @default("UTC")
+  locale    String   @default("en-US")
+  avatarUrl String?
+  bio       String?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model UserSettings {
+  id                String   @id @default(cuid())
+  userId            String   @unique
+  user              User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  theme             Theme    @default(System)
+  emailNotifications Boolean @default(false)
+  aiInsightsEnabled Boolean  @default(true)
+  createdAt         DateTime @default(now())
+  updatedAt         DateTime @updatedAt
+}
+
+model Category {
+  id        String          @id @default(cuid())
+  userId    String
+  user      User            @relation(fields: [userId], references: [id], onDelete: Cascade)
+  name      String
+  type      TransactionType
+  color     String          @default("#6366f1")
+  icon      String          @default("tag")
+  isSystem  Boolean         @default(false)
+  createdAt DateTime        @default(now())
+  updatedAt DateTime        @updatedAt
+
+  transactions Transaction[]
+  budgets      Budget[]
+
+  @@index([userId])
+  @@index([userId, type])
+}
+
+model Transaction {
+  id          String           @id @default(cuid())
+  userId      String
+  user        User             @relation(fields: [userId], references: [id], onDelete: Cascade)
+  categoryId  String?
+  category    Category?        @relation(fields: [categoryId], references: [id], onDelete: SetNull)
+  type        TransactionType
+  amount      Decimal          @db.Decimal(12, 2)
+  currency    String           @default("USD")
+  description String?
+  date        DateTime         @default(now())
+  source      TransactionSource @default(Manual)
+  createdAt   DateTime         @default(now())
+  updatedAt   DateTime         @updatedAt
+
+  @@index([userId])
+  @@index([userId, date])
+  @@index([categoryId])
+}
+
+model Budget {
+  id         String        @id @default(cuid())
+  userId     String
+  user       User          @relation(fields: [userId], references: [id], onDelete: Cascade)
+  name       String
+  categoryId String?
+  category   Category?     @relation(fields: [categoryId], references: [id], onDelete: SetNull)
+  amount     Decimal       @db.Decimal(12, 2)
+  period     BudgetPeriod  @default(Monthly)
+  startDate  DateTime      @default(now())
+  createdAt  DateTime      @default(now())
+  updatedAt  DateTime @updatedAt
+
+  @@index([userId])
+}
+
+model ScoreHistory {
+  id             String   @id @default(cuid())
+  userId         String
+  user           User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  month          String
+  score          Int
+  breakdown       Json
+  recommendations Json
+  createdAt      DateTime @default(now())
+  updatedAt      DateTime @updatedAt
+
+  @@unique([userId, month])
+  @@index([userId])
+}
+
+model Recommendation {
+  id             String   @id @default(cuid())
+  userId         String
+  user           User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  key            String
+  category       String
+  title          String
+  summary        String
+  explanation     String
+  reason         String
+  evidence       String
+  monthlySavings Decimal  @db.Decimal(12,2)
+  annualSavings   Decimal  @db.Decimal(12,2)
+  scoreImpact    Int
+  difficulty     String
+  priority       String
+  confidence     String
+  action         String
+  status         String   @default("active")
+  createdAt      DateTime @default(now())
+  updatedAt      DateTime @updatedAt
+  expiresAt      DateTime?
+  acceptedAt     DateTime?
+  completedAt    DateTime?
+
+  @@unique([userId, key])
+  @@index([userId, status])
+}
