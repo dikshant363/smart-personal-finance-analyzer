@@ -52,23 +52,57 @@ model User {
 }
 
 model Goal {
-  id             String   @id @default(cuid())
-  userId         String
-  user           User     @relation(fields: [userId], references: [id], onDelete: Cascade)
-  name           String
-  description    String?
-  targetAmount   Decimal  @db.Decimal(12, 2)
-  currentAmount  Decimal  @default(0) @db.Decimal(12, 2)
-  currency       String   @default("USD")
-  deadline       DateTime?
-  priority       String   @default("medium")
-  status         String   @default("active")
-  createdAt      DateTime @default(now())
-  updatedAt      DateTime @updatedAt
+  id                            String             @id @default(cuid())
+  userId                        String
+  user                          User               @relation(fields: [userId], references: [id], onDelete: Cascade)
+  name                          String
+  description                   String?
+  targetAmount                  Decimal            @db.Decimal(12, 2)
+  currentAmount                 Decimal            @default(0) @db.Decimal(12, 2)
+  currency                      String             @default("USD")
+  deadline                      DateTime?
+  priority                      String             @default("medium")
+  status                        String             @default("active")
+  type                          String             @default("custom")
+  estimatedMonthlyContribution  Decimal?           @default(0) @db.Decimal(12, 2)
+  actualMonthlyContribution     Decimal?           @default(0) @db.Decimal(12, 2)
+  expectedCompletion            DateTime?
+  forecastCompletion            DateTime?
+  milestones                    GoalMilestone[]
+  contributions                 GoalContribution[]
+  createdAt                     DateTime           @default(now())
+  updatedAt                     DateTime           @updatedAt
 
   @@index([userId])
   @@index([userId, status])
 }
+
+model GoalMilestone {
+  id         String    @id @default(cuid())
+  goalId     String
+  goal       Goal      @relation(fields: [goalId], references: [id], onDelete: Cascade)
+  percentage Int
+  amount     Decimal   @db.Decimal(12, 2)
+  achievedAt DateTime?
+  isCustom   Boolean   @default(false)
+  createdAt  DateTime  @default(now())
+  updatedAt  DateTime  @updatedAt
+
+  @@index([goalId])
+}
+
+model GoalContribution {
+  id          String   @id @default(cuid())
+  goalId      String
+  goal        Goal     @relation(fields: [goalId], references: [id], onDelete: Cascade)
+  amount      Decimal  @db.Decimal(12, 2)
+  date        DateTime @default(now())
+  description String?
+  createdAt   DateTime @default(now())
+
+  @@index([goalId])
+}
+
 
 model Forecast {
   id             String   @id @default(cuid())

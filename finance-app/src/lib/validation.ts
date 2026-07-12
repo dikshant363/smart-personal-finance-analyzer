@@ -48,13 +48,18 @@ export type SettingsInput = z.infer<typeof settingsSchema>;
 
 export const goalSchema = z.object({
   name: z.string().min(1).max(80),
-  description: z.string().max(200).optional(),
+  description: z.string().max(200).optional().nullable(),
   targetAmount: z.number().positive(),
   currentAmount: z.number().min(0).optional(),
   currency: z.string().length(3).optional(),
-  deadline: z.string().datetime().optional(),
-  priority: z.enum(["low", "medium", "high"]).optional(),
-  status: z.enum(["active", "completed", "archived"]).optional(),
+  deadline: z.string().optional().nullable(), // Allow string formats for easy input from forms
+  priority: z.enum(["low", "medium", "high", "critical"]).optional(),
+  status: z.enum(["planning", "active", "behind_schedule", "ahead_of_schedule", "completed", "paused", "archived", "cancelled"]).optional(),
+  type: z.string().min(1).max(40).optional(),
+  estimatedMonthlyContribution: z.number().nonnegative().optional(),
+  actualMonthlyContribution: z.number().nonnegative().optional(),
+  expectedCompletion: z.string().optional().nullable(),
+  forecastCompletion: z.string().optional().nullable(),
 });
 export type GoalInput = z.infer<typeof goalSchema>;
 
@@ -64,8 +69,13 @@ export const goalUpdateSchema = z.object({
   targetAmount: z.number().positive().optional(),
   currentAmount: z.number().min(0).optional(),
   currency: z.string().length(3).optional(),
-  deadline: z.string().datetime().optional().nullable(),
-  priority: z.enum(["low", "medium", "high"]).optional(),
-  status: z.enum(["active", "completed", "archived"]).optional(),
+  deadline: z.string().optional().nullable(),
+  priority: z.enum(["low", "medium", "high", "critical"]).optional(),
+  status: z.enum(["planning", "active", "behind_schedule", "ahead_of_schedule", "completed", "paused", "archived", "cancelled"]).optional(),
+  type: z.string().min(1).max(40).optional(),
+  estimatedMonthlyContribution: z.number().nonnegative().optional(),
+  actualMonthlyContribution: z.number().nonnegative().optional(),
+  expectedCompletion: z.string().optional().nullable(),
+  forecastCompletion: z.string().optional().nullable(),
 });
 export type GoalUpdateInput = z.infer<typeof goalUpdateSchema>;
