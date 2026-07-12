@@ -2,6 +2,7 @@ import { json, error, handleError, getAuthedUser, requireAuthed } from "@/lib/ap
 import { transactionSchema } from "@/lib/validation";
 import { prisma } from "@/lib/prisma";
 import { toNumber } from "@/lib/currency";
+import { publishEvent } from "@/lib/automation";
 
 export async function GET(req: Request) {
   try {
@@ -51,6 +52,13 @@ export async function POST(req: Request) {
         source: "Manual",
       },
     });
+
+    await publishEvent({
+      type: "transaction.created",
+      userId: u.id,
+      payload: t,
+    });
+
     return json({ transaction: { ...t, amount: toNumber(t.amount) } }, 201);
   } catch (e) {
     return handleError(e);

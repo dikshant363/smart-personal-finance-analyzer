@@ -55,6 +55,9 @@ model User {
   notificationCandidates NotificationCandidate[]
   processedDocuments    ProcessedDocument[]
   exchangeAudits        ExchangeAudit[]
+  notifications         Notification[]
+  workflowJobs          WorkflowJob[]
+  workflowHistory       WorkflowHistory[]
 }
 
 model Goal {
@@ -363,4 +366,50 @@ model ExchangeAudit {
 
   @@index([userId])
   @@index([userId, action])
+}
+
+model Notification {
+  id        String   @id @default(cuid())
+  userId    String
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  title     String
+  body      String
+  type      String   // "info", "warning", "critical", "success", "reminder", "recommendation", "achievement"
+  isRead    Boolean  @default(false)
+  createdAt DateTime @default(now())
+
+  @@index([userId])
+  @@index([userId, isRead])
+}
+
+model WorkflowJob {
+  id           String   @id @default(cuid())
+  userId       String
+  user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  name         String
+  triggerType  String   // "EVENT" or "CRON"
+  triggerName  String   // e.g. "transaction.created" or "0 0 * * *"
+  status       String   @default("pending") // "pending", "running", "success", "failed"
+  runCount     Int      @default(0)
+  lastRun      DateTime?
+  nextRun      DateTime?
+  errorMessage String?
+  createdAt    DateTime @default(now())
+
+  @@index([userId])
+  @@index([userId, status])
+}
+
+model WorkflowHistory {
+  id           String   @id @default(cuid())
+  userId       String
+  user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  jobName      String
+  actionType   String
+  status       String
+  durationMs   Int
+  errorMessage String?
+  createdAt    DateTime @default(now())
+
+  @@index([userId])
 }

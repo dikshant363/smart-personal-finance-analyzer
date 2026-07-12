@@ -15,6 +15,9 @@ import {
   Lightbulb,
   TrendingUp,
   Target,
+  FileText,
+  Database,
+  Cpu,
 } from "lucide-react";
 import { navItems } from "@/lib/nav";
 import { cn } from "@/lib/utils";
@@ -34,6 +37,9 @@ const iconMap = {
   Lightbulb,
   TrendingUp,
   Target,
+  FileText,
+  Database,
+  Cpu,
 } as const;
 
 type IconName = keyof typeof iconMap;
