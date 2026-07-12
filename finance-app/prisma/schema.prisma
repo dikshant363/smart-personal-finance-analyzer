@@ -521,3 +521,14 @@ model Account {
   @@index([userId])
   @@index([portfolioId])
 }
+
+model ExchangeRate {
+  id           String   @id @default(cuid())
+  fromCurrency String   // e.g. "EUR"
+  toCurrency   String   // e.g. "USD"
+  rate         Decimal  @db.Decimal(12, 6)
+  date         DateTime @default(now())
+  source       String   @default("Manual") // "Manual" or "Provider"
+
+  @@index([fromCurrency, toCurrency, date])
+}

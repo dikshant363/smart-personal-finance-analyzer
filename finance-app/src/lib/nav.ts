@@ -7,6 +7,7 @@ export const navItems: NavItem[] = [
   { href: "/net-worth", label: "Net Worth", icon: "LineChart" },
   { href: "/debt", label: "Debt Planner", icon: "Activity" },
   { href: "/portfolios", label: "Portfolios", icon: "Wallet" },
+  { href: "/currency", label: "Currency Desk", icon: "ArrowLeftRight" },
   { href: "/transactions", label: "Transactions", icon: "ArrowLeftRight" },
   { href: "/categories", label: "Categories", icon: "Tags" },
   { href: "/budgets", label: "Budgets", icon: "Wallet" },
