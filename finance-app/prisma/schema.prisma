@@ -53,6 +53,7 @@ model User {
   emergencyFundHistory  EmergencyFundHistory[]
   recurringItems        RecurringItem[]
   notificationCandidates NotificationCandidate[]
+  processedDocuments    ProcessedDocument[]
 }
 
 model Goal {
@@ -325,6 +326,23 @@ model NotificationCandidate {
   status    String   @default("Pending") // "Pending", "Sent", "Failed"
   type      String   // e.g. "recurring_payment_reminder"
   createdAt DateTime @default(now())
+
+  @@index([userId])
+  @@index([userId, status])
+}
+
+model ProcessedDocument {
+  id               String   @id @default(cuid())
+  userId           String
+  user             User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  fileName         String
+  fileType         String   // "JPEG", "PNG", "WEBP", "PDF"
+  fileSize         Int
+  status           String   @default("uploaded") // "uploaded", "processing", "review_required", "confirmed", "failed"
+  extractedData    Json?    // Stores parsed fields and confidence scores
+  confidenceScore  Float    @default(0.0)
+  createdAt        DateTime @default(now())
+  updatedAt        DateTime @updatedAt
 
   @@index([userId])
   @@index([userId, status])
