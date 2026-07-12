@@ -67,6 +67,7 @@ model User {
   workspaceMembers      WorkspaceMember[]
   workspaceInvitations  WorkspaceInvitation[]
   conversations         Conversation[]
+  offlineSyncQueues     OfflineSyncQueue[]
 }
 
 model Goal {
@@ -664,4 +665,16 @@ model Message {
   createdAt      DateTime     @default(now())
 
   @@index([conversationId])
+}
+
+model OfflineSyncQueue {
+  id        String   @id @default(cuid())
+  userId    String
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  action    String   // "CreateTransaction", "UpdateBudget", etc.
+  payload   String   // JSON string
+  status    String   @default("Pending") // "Pending", "Synced", "Failed"
+  createdAt DateTime @default(now())
+
+  @@index([userId])
 }
