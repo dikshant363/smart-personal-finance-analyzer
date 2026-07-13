@@ -1,22 +1,40 @@
 "use client";
 
 import { useEffect } from "react";
+import { PWAInstallPrompt } from "@/components/pwa/install-prompt";
+import { PWAUpdateManager } from "@/components/pwa/update-manager";
+import { registerServiceWorker } from "@/lib/pwa/engine";
 
+/**
+ * PWA Registry — mounts all PWA infrastructure for the web application.
+ * Sprint 11.2: Enhanced with install prompt, update manager, and full SW lifecycle.
+ */
 export function PWARegistry() {
   useEffect(() => {
-    if (typeof window !== "undefined" && "serviceWorker" in navigator) {
-      window.addEventListener("load", () => {
-        navigator.serviceWorker
-          .register("/sw.js")
-          .then((registration) => {
-            console.log("Service Worker registered successfully with scope:", registration.scope);
-          })
-          .catch((error) => {
-            console.error("Service Worker registration failed:", error);
+    registerServiceWorker({
+      onUpdateAvailable: (version) => {
+        console.log(`[PWA] Update available: ${version}`);
+      },
+      onOnline: () => {
+        console.log("[PWA] Connection restored");
+        // Trigger background sync when back online
+        if ("serviceWorker" in navigator) {
+          navigator.serviceWorker.ready.then((reg) => {
+            // @ts-expect-error BackgroundSync not in all TS defs
+            reg.sync?.register("sync-transactions").catch(() => {});
           });
-      });
-    }
+        }
+      },
+      onOffline: () => {
+        console.log("[PWA] Connection lost — offline mode active");
+      },
+    });
   }, []);
 
-  return null;
+  return (
+    <>
+      <PWAUpdateManager />
+      <PWAInstallPrompt />
+    </>
+  );
 }
