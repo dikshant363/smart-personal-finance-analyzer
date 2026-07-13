@@ -8,8 +8,8 @@ export interface ReleaseSummary {
 
 export function getReleaseDetails(): ReleaseSummary {
   return {
-    version: "v1.0.0-rc1",
-    codename: "Antigravity Prime Core",
+    version: "v1.0.0",
+    codename: "Antigravity Prime Enterprise LTS",
     releaseDate: new Date(),
     qualityGatesPassed: true,
     activeModules: [
@@ -22,6 +22,12 @@ export function getReleaseDetails(): ReleaseSummary {
       "Collaboration Space",
       "AI Financial Copilot",
       "Offline Sync Queue",
+      "Data Warehouse Platform",
+      "Event Stream Bus",
+      "Workflow Automations",
+      "AI Safety Guardrails",
+      "GDPR Privacy Managers",
+      "Circuit Resilience Fallbacks",
     ],
   };
 }
