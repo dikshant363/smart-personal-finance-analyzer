@@ -14,6 +14,7 @@ export const navItems: NavItem[] = [
   { href: "/retirement", label: "Retirement Planner", icon: "Target" },
   { href: "/tax", label: "Tax Planning", icon: "FileText" },
   { href: "/risk", label: "Risk Management", icon: "Shield" },
+  { href: "/collaboration", label: "Collaboration Desk", icon: "Users" },
   { href: "/copilot", label: "AI Copilot", icon: "Sparkles" },
   { href: "/offline", label: "Offline Sync", icon: "WifiOff" },
   { href: "/transactions", label: "Transactions", icon: "ArrowLeftRight" },

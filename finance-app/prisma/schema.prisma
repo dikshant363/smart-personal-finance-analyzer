@@ -39,40 +39,43 @@ model User {
   updatedAt    DateTime  @updatedAt
   deletedAt    DateTime?
 
-  profile                Profile?
-  settings               UserSettings?
-  categories             Category[]
-  transactions           Transaction[]
-  budgets                Budget[]
-  scoreHistory           ScoreHistory[]
-  recommendations        Recommendation[]
-  forecasts              Forecast[]
-  aiInsights             AiInsight[]
-  goals                  Goal[]
-  emergencyFundSettings  EmergencyFundSettings?
-  emergencyFundHistory   EmergencyFundHistory[]
-  recurringItems         RecurringItem[]
-  notificationCandidates NotificationCandidate[]
-  processedDocuments     ProcessedDocument[]
-  exchangeAudits         ExchangeAudit[]
-  notifications          Notification[]
-  workflowJobs           WorkflowJob[]
-  workflowHistory        WorkflowHistory[]
-  financialScenarios     FinancialScenario[]
-  assets                 Asset[]
-  liabilities            Liability[]
-  portfolios             Portfolio[]
-  accounts               Account[]
-  syncHistories          SyncHistory[]
-  workspaceMembers       WorkspaceMember[]
-  workspaceInvitations   WorkspaceInvitation[]
-  conversations          Conversation[]
-  offlineSyncQueues      OfflineSyncQueue[]
-  Investment             Investment[]
-  WatchlistItem          WatchlistItem[]
-  RetirementPlan         RetirementPlan[]
-  TaxRecord              TaxRecord[]
-  InsurancePolicy        InsurancePolicy[]
+  profile                 Profile?
+  settings                UserSettings?
+  categories              Category[]
+  transactions            Transaction[]
+  budgets                 Budget[]
+  scoreHistory            ScoreHistory[]
+  recommendations         Recommendation[]
+  forecasts               Forecast[]
+  aiInsights              AiInsight[]
+  goals                   Goal[]
+  emergencyFundSettings   EmergencyFundSettings?
+  emergencyFundHistory    EmergencyFundHistory[]
+  recurringItems          RecurringItem[]
+  notificationCandidates  NotificationCandidate[]
+  processedDocuments      ProcessedDocument[]
+  exchangeAudits          ExchangeAudit[]
+  notifications           Notification[]
+  workflowJobs            WorkflowJob[]
+  workflowHistory         WorkflowHistory[]
+  financialScenarios      FinancialScenario[]
+  assets                  Asset[]
+  liabilities             Liability[]
+  portfolios              Portfolio[]
+  accounts                Account[]
+  syncHistories           SyncHistory[]
+  workspaceMembers        WorkspaceMember[]
+  workspaceInvitations    WorkspaceInvitation[]
+  conversations           Conversation[]
+  offlineSyncQueues       OfflineSyncQueue[]
+  Investment              Investment[]
+  WatchlistItem           WatchlistItem[]
+  RetirementPlan          RetirementPlan[]
+  TaxRecord               TaxRecord[]
+  InsurancePolicy         InsurancePolicy[]
+  CollaborationInvitation CollaborationInvitation[]
+  CollaboratorShare       CollaboratorShare[]
+  ReviewRequest           ReviewRequest[]
 }
 
 model Goal {
@@ -816,4 +819,73 @@ model InsurancePolicy {
 
   @@index([userId])
   @@index([workspaceId])
+}
+
+model CollaborationInvitation {
+  id          String   @id @default(cuid())
+  email       String
+  role        String // "Financial Planner", "Accountant", "Lawyer", "Family Member", "Business Partner", "Mentor", "Custom"
+  status      String // "Pending", "Accepted", "Declined", "Expired", "Revoked"
+  permissions String // comma-separated list of granted modules
+  token       String   @unique
+  userId      String
+  user        User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  @@index([userId])
+}
+
+model CollaboratorShare {
+  id             String   @id @default(cuid())
+  userId         String
+  user           User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  collaboratorId String
+  role           String
+  permissions    String // comma-separated list of granted modules
+  status         String   @default("Active") // "Active", "Suspended"
+  createdAt      DateTime @default(now())
+  updatedAt      DateTime @updatedAt
+
+  @@index([userId])
+  @@index([collaboratorId])
+}
+
+model ReviewRequest {
+  id             String                 @id @default(cuid())
+  userId         String
+  user           User                   @relation(fields: [userId], references: [id], onDelete: Cascade)
+  collaboratorId String // recipient reviewer user id
+  title          String
+  description    String
+  module         String // "Retirement", "Investments", "Tax", "Insurance"
+  status         String                 @default("Pending") // "Pending", "Reviewed", "Closed"
+  createdAt      DateTime               @default(now())
+  updatedAt      DateTime               @updatedAt
+  comments       CollaborationComment[]
+
+  @@index([userId])
+  @@index([collaboratorId])
+}
+
+model CollaborationComment {
+  id              String        @id @default(cuid())
+  reviewRequestId String
+  reviewRequest   ReviewRequest @relation(fields: [reviewRequestId], references: [id], onDelete: Cascade)
+  authorId        String // user id of the author
+  content         String
+  createdAt       DateTime      @default(now())
+  updatedAt       DateTime      @updatedAt
+
+  @@index([reviewRequestId])
+}
+
+model CollaborationAudit {
+  id        String   @id @default(cuid())
+  userId    String
+  action    String // e.g. "INVITATION_SENT", "PERMISSION_CHANGED", "DOWNLOAD_REPORT", "COMMENT_ADDED"
+  details   String
+  timestamp DateTime @default(now())
+
+  @@index([userId])
 }
