@@ -78,6 +78,7 @@ model User {
   ReviewRequest           ReviewRequest[]
   DeveloperExtension      DeveloperExtension[]
   BankConnection          BankConnection[]
+  BusinessProfile         BusinessProfile[]
 }
 
 model Goal {
@@ -971,4 +972,51 @@ model ExpenseSplit {
   createdAt     DateTime         @default(now())
 
   @@index([householdId])
+}
+
+model BusinessProfile {
+  id           String            @id @default(cuid())
+  userId       String
+  user         User              @relation(fields: [userId], references: [id], onDelete: Cascade)
+  name         String
+  businessType String            @default("Freelance")
+  currency     String            @default("USD")
+  timezone     String            @default("UTC")
+  taxId        String?
+  createdAt    DateTime          @default(now())
+  updatedAt    DateTime          @updatedAt
+  clients      BusinessClient[]
+  invoices     BusinessInvoice[]
+
+  @@index([userId])
+}
+
+model BusinessClient {
+  id         String            @id @default(cuid())
+  businessId String
+  business   BusinessProfile   @relation(fields: [businessId], references: [id], onDelete: Cascade)
+  name       String
+  email      String?
+  phone      String?
+  notes      String?
+  createdAt  DateTime          @default(now())
+  invoices   BusinessInvoice[]
+
+  @@index([businessId])
+}
+
+model BusinessInvoice {
+  id         String          @id @default(cuid())
+  businessId String
+  business   BusinessProfile @relation(fields: [businessId], references: [id], onDelete: Cascade)
+  clientId   String
+  client     BusinessClient  @relation(fields: [clientId], references: [id], onDelete: Cascade)
+  amount     Float
+  status     String          @default("Draft")
+  dueDate    DateTime
+  createdAt  DateTime        @default(now())
+  updatedAt  DateTime        @updatedAt
+
+  @@index([businessId])
+  @@index([clientId])
 }
