@@ -72,6 +72,7 @@ model User {
   WatchlistItem          WatchlistItem[]
   RetirementPlan         RetirementPlan[]
   TaxRecord              TaxRecord[]
+  InsurancePolicy        InsurancePolicy[]
 }
 
 model Goal {
@@ -590,23 +591,24 @@ model SyncHistory {
 }
 
 model Workspace {
-  id             String                @id @default(cuid())
-  name           String
-  type           String                @default("Personal") // "Personal", "Couple", "Family", "Roommates", "Business", "Custom"
-  createdAt      DateTime              @default(now())
-  updatedAt      DateTime              @updatedAt
-  members        WorkspaceMember[]
-  invitations    WorkspaceInvitation[]
-  activityLogs   ActivityLog[]
-  transactions   Transaction[]
-  budgets        Budget[]
-  goals          Goal[]
-  accounts       Account[]
-  liabilities    Liability[]
-  assets         Asset[]
-  recurringItems RecurringItem[]
-  scenarios      FinancialScenario[]
-  RetirementPlan RetirementPlan[]
+  id              String                @id @default(cuid())
+  name            String
+  type            String                @default("Personal") // "Personal", "Couple", "Family", "Roommates", "Business", "Custom"
+  createdAt       DateTime              @default(now())
+  updatedAt       DateTime              @updatedAt
+  members         WorkspaceMember[]
+  invitations     WorkspaceInvitation[]
+  activityLogs    ActivityLog[]
+  transactions    Transaction[]
+  budgets         Budget[]
+  goals           Goal[]
+  accounts        Account[]
+  liabilities     Liability[]
+  assets          Asset[]
+  recurringItems  RecurringItem[]
+  scenarios       FinancialScenario[]
+  RetirementPlan  RetirementPlan[]
+  InsurancePolicy InsurancePolicy[]
 }
 
 model WorkspaceMember {
@@ -789,4 +791,29 @@ model TaxRecord {
 
   @@index([userId])
   @@index([taxYear])
+}
+
+model InsurancePolicy {
+  id               String     @id @default(cuid())
+  userId           String
+  user             User       @relation(fields: [userId], references: [id], onDelete: Cascade)
+  name             String
+  carrier          String
+  policyNumber     String?
+  category         String // "Life", "Health", "Disability", "Property", "Liability", "Auto", "Custom"
+  coverageAmount   Float
+  premiumAmount    Float
+  billingFrequency String // "Monthly", "Quarterly", "Annual", "One-Time"
+  startDate        DateTime?
+  expirationDate   DateTime?
+  beneficiaries    String?
+  notes            String?
+  status           String     @default("Active") // "Active", "Lapsed", "Terminated"
+  workspaceId      String?
+  workspace        Workspace? @relation(fields: [workspaceId], references: [id], onDelete: SetNull)
+  createdAt        DateTime   @default(now())
+  updatedAt        DateTime   @updatedAt
+
+  @@index([userId])
+  @@index([workspaceId])
 }
