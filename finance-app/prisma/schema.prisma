@@ -79,6 +79,7 @@ model User {
   DeveloperExtension      DeveloperExtension[]
   BankConnection          BankConnection[]
   BusinessProfile         BusinessProfile[]
+  AutomationWorkflow      AutomationWorkflow[]
 }
 
 model Goal {
@@ -1019,4 +1020,31 @@ model BusinessInvoice {
 
   @@index([businessId])
   @@index([clientId])
+}
+
+model AutomationWorkflow {
+  id          String              @id @default(cuid())
+  userId      String
+  user        User                @relation(fields: [userId], references: [id], onDelete: Cascade)
+  name        String
+  triggerType String
+  conditions  String
+  actions     String
+  status      String              @default("Enabled")
+  createdAt   DateTime            @default(now())
+  updatedAt   DateTime            @updatedAt
+  executions  WorkflowExecution[]
+
+  @@index([userId])
+}
+
+model WorkflowExecution {
+  id         String             @id @default(cuid())
+  workflowId String
+  workflow   AutomationWorkflow @relation(fields: [workflowId], references: [id], onDelete: Cascade)
+  status     String
+  details    String?
+  createdAt  DateTime           @default(now())
+
+  @@index([workflowId])
 }
