@@ -77,6 +77,7 @@ model User {
   CollaboratorShare       CollaboratorShare[]
   ReviewRequest           ReviewRequest[]
   DeveloperExtension      DeveloperExtension[]
+  BankConnection          BankConnection[]
 }
 
 model Goal {
@@ -921,3 +922,17 @@ model FeatureFlag {
   updatedAt      DateTime @updatedAt
 }
 
+model BankConnection {
+  id              String   @id @default(cuid())
+  userId          String
+  user            User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  institutionId   String
+  institutionName String
+  accessToken     String
+  status          String   @default("Connected")
+  lastSynced      DateTime @default(now())
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+
+  @@index([userId])
+}
