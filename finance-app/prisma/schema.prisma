@@ -71,6 +71,7 @@ model User {
   Investment             Investment[]
   WatchlistItem          WatchlistItem[]
   RetirementPlan         RetirementPlan[]
+  TaxRecord              TaxRecord[]
 }
 
 model Goal {
@@ -768,4 +769,24 @@ model RetirementPlan {
 
   @@index([userId])
   @@index([workspaceId])
+}
+
+model TaxRecord {
+  id           String   @id @default(cuid())
+  userId       String
+  user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  taxYear      Int
+  jurisdiction String
+  type         String // "Income", "Expense", "Donation", "Investment"
+  category     String // e.g. "Employment Income", "Charitable Donations", etc.
+  amount       Float
+  currency     String
+  notes        String?
+  tags         String? // comma-separated tags
+  documentId   String? // optional link to a ProcessedDocument
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+
+  @@index([userId])
+  @@index([taxYear])
 }

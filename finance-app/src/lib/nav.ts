@@ -12,6 +12,7 @@ export const navItems: NavItem[] = [
   { href: "/workspaces", label: "Workspaces", icon: "Users" },
   { href: "/investments", label: "Investments", icon: "TrendingUp" },
   { href: "/retirement", label: "Retirement Planner", icon: "Target" },
+  { href: "/tax", label: "Tax Planning", icon: "FileText" },
   { href: "/copilot", label: "AI Copilot", icon: "Sparkles" },
   { href: "/offline", label: "Offline Sync", icon: "WifiOff" },
   { href: "/transactions", label: "Transactions", icon: "ArrowLeftRight" },
