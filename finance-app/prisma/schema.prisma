@@ -70,6 +70,7 @@ model User {
   offlineSyncQueues      OfflineSyncQueue[]
   Investment             Investment[]
   WatchlistItem          WatchlistItem[]
+  RetirementPlan         RetirementPlan[]
 }
 
 model Goal {
@@ -604,6 +605,7 @@ model Workspace {
   assets         Asset[]
   recurringItems RecurringItem[]
   scenarios      FinancialScenario[]
+  RetirementPlan RetirementPlan[]
 }
 
 model WorkspaceMember {
@@ -741,4 +743,29 @@ model WatchlistItem {
   updatedAt   DateTime @updatedAt
 
   @@index([userId])
+}
+
+model RetirementPlan {
+  id                  String     @id @default(cuid())
+  userId              String
+  user                User       @relation(fields: [userId], references: [id], onDelete: Cascade)
+  name                String
+  profileType         String // "Early", "Traditional", "Semi", "Custom"
+  currentAge          Int
+  retirementAge       Int
+  lifeExpectancy      Int
+  currentSavings      Float
+  monthlyContribution Float
+  expectedExpenses    Float
+  expectedReturn      Float
+  expectedInflation   Float
+  withdrawalStrategy  String
+  currency            String
+  workspaceId         String?
+  workspace           Workspace? @relation(fields: [workspaceId], references: [id], onDelete: SetNull)
+  createdAt           DateTime   @default(now())
+  updatedAt           DateTime   @updatedAt
+
+  @@index([userId])
+  @@index([workspaceId])
 }
