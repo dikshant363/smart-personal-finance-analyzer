@@ -3,7 +3,7 @@ import { getCurrentUser } from "@/lib/auth";
 import { prisma } from "@/lib/prisma";
 import { calculateHealthScore, getScoreTrend } from "@/lib/score/engine";
 import { saveMonthlySnapshot, getHistory } from "@/lib/score/store";
-import { ScoreBreakdown } from "@/components/score/score-breakdown";
+import { ScoreBreakdown } from "@/components/score/ScoreBreakdown";
 
 export default async function ScorePage() {
   const user = await getCurrentUser();

@@ -1,7 +1,7 @@
 import { redirect } from "next/navigation";
 import { getCurrentUser } from "@/lib/auth";
 import { prisma } from "@/lib/prisma";
-import { OfflineClient } from "@/components/offline/offline-client";
+import { OfflineClient } from "@/components/offline/OfflineClient";
 
 export default async function OfflinePage() {
   const user = await getCurrentUser();

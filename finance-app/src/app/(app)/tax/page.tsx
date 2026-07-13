@@ -1,5 +1,5 @@
 import { Metadata } from "next";
-import TaxClient from "@/components/tax/tax-client";
+import TaxClient from "@/components/tax/TaxClient";
 
 export const metadata: Metadata = {
   title: "Tax Intelligence & Planning | Smart Personal Finance Analyzer",

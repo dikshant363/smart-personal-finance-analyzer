@@ -2,7 +2,7 @@ import { redirect } from "next/navigation";
 import { getCurrentUser } from "@/lib/auth";
 import { prisma } from "@/lib/prisma";
 import { getCurrencyAllocationSummary } from "@/lib/currency/engine";
-import { CurrencyClient } from "@/components/currency/currency-client";
+import { CurrencyClient } from "@/components/currency/CurrencyClient";
 
 export default async function CurrencyPage() {
   const user = await getCurrentUser();

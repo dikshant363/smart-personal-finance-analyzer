@@ -1,7 +1,7 @@
 import { redirect } from "next/navigation";
 import { getCurrentUser } from "@/lib/auth";
 import { prisma } from "@/lib/prisma";
-import { ExchangeClient } from "@/components/exchange/exchange-client";
+import { ExchangeClient } from "@/components/exchange/ExchangeClient";
 
 export default async function ExchangePage() {
   const user = await getCurrentUser();

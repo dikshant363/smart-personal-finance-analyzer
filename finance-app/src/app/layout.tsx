@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import "./globals.css";
-import { PWARegistry } from "@/components/pwa-registry";
+import { PWARegistry } from "@/components/PwaRegistry";
 
 const inter = Inter({ subsets: ["latin"] });
 

@@ -9,7 +9,7 @@ import {
   generateEmergencyRecommendations,
   generateEmergencyForecast
 } from "@/lib/emergency-fund";
-import { EmergencyClient } from "@/components/emergency-fund/emergency-client";
+import { EmergencyClient } from "@/components/emergency-fund/EmergencyClient";
 
 export default async function EmergencyFundPage() {
   const user = await getCurrentUser();

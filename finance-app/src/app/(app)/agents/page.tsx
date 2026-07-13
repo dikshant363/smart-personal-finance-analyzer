@@ -1,5 +1,5 @@
 import { Metadata } from "next";
-import AgentClient from "@/components/agent/agent-client";
+import AgentClient from "@/components/agent/AgentClient";
 
 export const metadata: Metadata = {
   title: "AI Agent Orchestrator | Smart Personal Finance Analyzer",

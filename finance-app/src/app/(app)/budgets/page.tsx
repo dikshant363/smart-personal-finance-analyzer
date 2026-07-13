@@ -3,7 +3,7 @@ import { getCurrentUser } from "@/lib/auth";
 import { prisma } from "@/lib/prisma";
 import { computeBudgetSpent } from "@/lib/budgets";
 import { toNumber } from "@/lib/currency";
-import { BudgetsClient } from "@/components/budgets/budgets-client";
+import { BudgetsClient } from "@/components/budgets/BudgetsClient";
 
 export default async function BudgetsPage() {
   const user = await getCurrentUser();

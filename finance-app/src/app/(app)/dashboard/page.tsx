@@ -10,8 +10,8 @@ import {
   CardContent,
   CardHeader,
   CardTitle,
-} from "@/components/ui/card";
-import { Badge } from "@/components/ui/badge";
+} from "@/components/ui/Card";
+import { Badge } from "@/components/ui/Badge";
 import {
   Table,
   THead,
@@ -19,22 +19,22 @@ import {
   TR,
   TH,
   TD,
-} from "@/components/ui/table";
-import { EmptyState } from "@/components/ui/empty-state";
-import DashboardInsightsWidget from "@/components/dashboard/dashboard-insights-widget";
+} from "@/components/ui/Table";
+import { EmptyState } from "@/components/ui/EmptyState";
+import DashboardInsightsWidget from "@/components/dashboard/DashboardInsightsWidget";
 import { calculateHealthScore } from "@/lib/score/engine";
 import { saveMonthlySnapshot, getHistory } from "@/lib/score/store";
-import { HealthScoreCard } from "@/components/score/health-score-card";
-import { SpendingIntelligence } from "@/components/analysis/spending-intelligence";
+import { HealthScoreCard } from "@/components/score/HealthScoreCard";
+import { SpendingIntelligence } from "@/components/analysis/SpendingIntelligence";
 import { listRecommendations } from "@/lib/recommendations/repository";
-import { RecommendationsSummary } from "@/components/recommendations/recommendations-summary";
-import { RiskDetector } from "@/components/forecasting/risk-detector";
-import { AiInsightsFeed } from "@/components/ai-insights/ai-insights-feed";
-import GoalsWidget from "@/components/goals/goals-widget";
-import EmergencyWidget from "@/components/emergency-fund/emergency-widget";
-import RecurringWidget from "@/components/recurring/recurring-widget";
-import TimelineWidget from "@/components/timeline/timeline-widget";
-import NetWorthWidget from "@/components/asset/net-worth-widget";
+import { RecommendationsSummary } from "@/components/recommendations/RecommendationsSummary";
+import { RiskDetector } from "@/components/forecasting/RiskDetector";
+import { AiInsightsFeed } from "@/components/ai-insights/AiInsightsFeed";
+import GoalsWidget from "@/components/goals/GoalsWidget";
+import EmergencyWidget from "@/components/emergency-fund/EmergencyWidget";
+import RecurringWidget from "@/components/recurring/RecurringWidget";
+import TimelineWidget from "@/components/timeline/TimelineWidget";
+import NetWorthWidget from "@/components/asset/NetWorthWidget";
 
 export default async function DashboardPage() {
   const user = await getCurrentUser();
