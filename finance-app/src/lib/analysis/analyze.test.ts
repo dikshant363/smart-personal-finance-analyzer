@@ -26,6 +26,9 @@ function makeDb() {
     category: {
       findMany: async () => cats,
     },
+    profile: {
+      findUnique: async () => ({ currency: "USD" }),
+    },
   } as any;
 }
 

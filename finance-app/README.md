@@ -33,6 +33,9 @@
 ## Environment Variables
 See `.env.example` for required variables. Copy to `.env` and fill in values.
 
+## Features
+- **Multi-Currency Auto-Conversion** — transactions, goals, budgets, dashboards, and reports display amounts in your selected base currency (Profile → currency) while preserving each transaction's original currency. Missing exchange rates are handled gracefully (original amount shown unchanged).
+
 ## Financial Health Score
 The score is computed live from the user's data (0–100, 8 weighted dimensions) and persisted monthly to `ScoreHistory`. It is available at the dashboard card and `/score`.
 

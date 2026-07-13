@@ -2,6 +2,7 @@ import { redirect } from "next/navigation";
 import { getCurrentUser } from "@/lib/auth";
 import { prisma } from "@/lib/prisma";
 import { toNumber } from "@/lib/currency";
+import { withBaseCurrency } from "@/lib/currency";
 import { TransactionsClient } from "@/components/transactions/transactions-client";
 
 export default async function TransactionsPage() {
@@ -38,10 +39,12 @@ export default async function TransactionsPage() {
   const profile = await prisma.profile.findUnique({ where: { userId: user.id } });
   const currency = profile?.currency ?? "USD";
 
+  const transactionsView = await withBaseCurrency(mapped, currency);
+
   return (
     <div className="space-y-6">
       <h1 className="text-2xl font-semibold">Transactions</h1>
-      <TransactionsClient transactions={mapped} categories={categories} currency={currency} />
+      <TransactionsClient transactions={transactionsView} categories={categories} currency={currency} />
     </div>
   );
 }

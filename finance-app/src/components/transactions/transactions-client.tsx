@@ -24,6 +24,10 @@ type Transaction = {
   date: string;
   category: { name: string; color: string } | null;
   categoryId: string | null;
+  amountBase?: number;
+  baseCurrency?: string;
+  rate?: number | null;
+  converted?: boolean;
 };
 
 type Category = {
@@ -222,7 +226,15 @@ export function TransactionsClient({
                         tx.type === "Income" && "text-green-600 dark:text-green-400"
                       )}
                     >
-                      {formatMoney(tx.amount, tx.currency)}
+                      <div className="flex flex-col items-end">
+                        <span>{formatMoney(tx.amount, tx.currency)}</span>
+                        {tx.converted && tx.amountBase !== undefined && tx.baseCurrency && tx.baseCurrency !== tx.currency ? (
+                          <span className="text-xs text-neutral-500 dark:text-neutral-400">
+                            ≈ {formatMoney(tx.amountBase, tx.baseCurrency)}
+                            {tx.rate != null ? ` @ ${tx.rate.toFixed(4)}` : ""}
+                          </span>
+                        ) : null}
+                      </div>
                     </TD>
                     <TD className="text-right">
                       <div className="flex items-center justify-end gap-2">

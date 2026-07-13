@@ -2,6 +2,7 @@ import { redirect } from "next/navigation";
 import { getCurrentUser } from "@/lib/auth";
 import { prisma } from "@/lib/prisma";
 import { toNumber, formatMoney } from "@/lib/currency";
+import { withBaseCurrency } from "@/lib/currency";
 import { cn } from "@/lib/utils";
 import { analyzeSpending } from "@/lib/analysis/analyze";
 import {
@@ -90,6 +91,8 @@ export default async function DashboardPage() {
     amount: toNumber(tx.amount),
     date: tx.date.toISOString(),
   }));
+
+  const recentView = await withBaseCurrency(recent, currency);
 
   const budgets = await Promise.all(
     budgetsRaw.map(async (budget) => {
@@ -216,7 +219,7 @@ export default async function DashboardPage() {
                 </TR>
               </THead>
               <TBody>
-                {recent.map((tx) => (
+                {recentView.map((tx: { id: string; date: string; description: string | null; category: { name: string; color: string | null } | null; type: string; amount: number; currency: string; converted?: boolean; amountBase?: number; baseCurrency?: string }) => (
                   <TR key={tx.id}>
                     <TD>
                       {new Date(tx.date).toLocaleDateString("en-US", {
@@ -252,7 +255,14 @@ export default async function DashboardPage() {
                       </Badge>
                     </TD>
                     <TD className="text-right font-medium">
-                      {formatMoney(tx.amount, currency)}
+                      <div className="flex flex-col items-end">
+                        <span>{formatMoney(tx.amount, currency)}</span>
+                        {tx.converted && tx.amountBase !== undefined && tx.baseCurrency && tx.baseCurrency !== tx.currency ? (
+                          <span className="text-xs text-neutral-500 dark:text-neutral-400">
+                            ≈ {formatMoney(tx.amountBase, tx.baseCurrency)}
+                          </span>
+                        ) : null}
+                      </div>
                     </TD>
                   </TR>
                 ))}

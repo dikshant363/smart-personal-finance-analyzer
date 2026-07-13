@@ -2,6 +2,7 @@ import { json, error, handleError, getAuthedUser, requireAuthed } from "@/lib/ap
 import { transactionSchema } from "@/lib/validation";
 import { prisma } from "@/lib/prisma";
 import { toNumber } from "@/lib/currency";
+import { withBaseCurrency } from "@/lib/currency";
 import { publishEvent } from "@/lib/automation";
 
 export async function GET(req: Request) {
@@ -30,7 +31,16 @@ export async function GET(req: Request) {
       include: { category: { select: { name: true, color: true } } },
     });
 
-    return json({ transactions: txs.map((t) => ({ ...t, amount: toNumber(t.amount), date: t.date.toISOString() })) });
+    const profile = await prisma.profile.findUnique({ where: { userId: u.id } });
+    const baseCurrency = profile?.currency ?? "USD";
+
+    const mapped = txs.map((t) => ({
+      ...t,
+      amount: toNumber(t.amount),
+      date: t.date.toISOString(),
+    }));
+    const transactions = await withBaseCurrency(mapped, baseCurrency);
+    return json({ transactions });
   } catch (e) {
     return handleError(e);
   }

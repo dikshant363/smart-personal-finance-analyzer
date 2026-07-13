@@ -13,5 +13,5 @@
 - **Risk #002**: Rates API latency. Mitigation: Edge caching.
 
 ## 4. Roadmap Register
-- **Roadmap 1**: Multi-currency auto-conversion in transaction listings.
+- **Roadmap 1** [COMPLETED in Sprint 9.9]: Multi-currency auto-conversion in transaction listings (Sprint 9.9 — Multi-Currency Auto-Conversion & Unified Currency Display).
 - **Roadmap 2**: Real-time advisor video session embeds.

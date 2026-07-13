@@ -59,7 +59,8 @@ function startOfMonth(d: Date): Date {
 
 export async function computeInsights(
   userId: string,
-  db: Db = prisma
+  db: Db = prisma,
+  currency = "USD"
 ): Promise<{ insights: Insight[]; alerts: Alert[] }> {
   const now = new Date();
   const curStart = startOfMonth(now);
@@ -107,14 +108,14 @@ export async function computeInsights(
     const [topName, topAmount] = topCategories[0];
     const share = (topAmount / totalExpense) * 100;
     const list = topCategories
-      .map(([name, amt]) => `${name} (${formatMoney(amt)}, ${((amt / totalExpense) * 100).toFixed(0)}%)`)
+      .map(([name, amt]) => `${name} (${formatMoney(amt, currency)}, ${((amt / totalExpense) * 100).toFixed(0)}%)`)
       .join(", ");
     insights.push({
       id: "top-categories",
       title: "Top spending categories",
       summary: `${topName} leads your spending at ${share.toFixed(0)}% of outflows.`,
       explanation: `Your three largest categories this month account for the bulk of spending. Tracking these keeps the rest of your budget on track.`,
-      evidence: `Top: ${list}. Total expenses ${formatMoney(totalExpense)}.`,
+      evidence: `Top: ${list}. Total expenses ${formatMoney(totalExpense, currency)}.`,
       confidence: "very_high",
       impact: "medium",
       priority: "low",
@@ -149,8 +150,8 @@ export async function computeInsights(
       id: `increase-${name}`,
       title: `${name} spending increased`,
       summary: `${name} rose ${pct.toFixed(0)}% versus last month.`,
-      explanation: `${name} spending moved from ${formatMoney(prev)} to ${formatMoney(cur)} (${pct.toFixed(0)}%). This is the largest category increase this month.`,
-      evidence: `${formatMoney(prev)} → ${formatMoney(cur)} (+${pct.toFixed(0)}%)`,
+explanation: `${name} spending moved from ${formatMoney(prev, currency)} to ${formatMoney(cur, currency)} (${pct.toFixed(0)}%). This is the largest category increase this month.`,
+        evidence: `${formatMoney(prev, currency)} → ${formatMoney(cur, currency)} (+${pct.toFixed(0)}%)`,
       confidence: "high",
       impact: big ? "high" : "medium",
       priority: big ? "high" : "medium",
@@ -167,8 +168,8 @@ export async function computeInsights(
       id: `decrease-${name}`,
       title: `${name} spending decreased`,
       summary: `${name} fell ${Math.abs(pct).toFixed(0)}% versus last month.`,
-      explanation: `${name} spending dropped from ${formatMoney(prev)} to ${formatMoney(cur)} (${pct.toFixed(0)}%). Nice progress on controlling this category.`,
-      evidence: `${formatMoney(prev)} → ${formatMoney(cur)} (${pct.toFixed(0)}%)`,
+      explanation: `${name} spending dropped from ${formatMoney(prev, currency)} to ${formatMoney(cur, currency)} (${pct.toFixed(0)}%). Nice progress on controlling this category.`,
+      evidence: `${formatMoney(prev, currency)} → ${formatMoney(cur, currency)} (${pct.toFixed(0)}%)`,
       confidence: "high",
       impact: "low",
       priority: "low",
@@ -185,9 +186,9 @@ export async function computeInsights(
     insights.push({
       id: "recurring",
       title: "Recurring commitments estimate",
-      summary: `About ${formatMoney(recurring)}/mo flows to categories you also paid last month.`,
+      summary: `About ${formatMoney(recurring, currency)}/mo flows to categories you also paid last month.`,
       explanation: `These categories appeared in both this and last month, suggesting fixed or recurring obligations.`,
-      evidence: `${formatMoney(recurring)}/mo${totalExpense > 0 ? ` (${((recurring / totalExpense) * 100).toFixed(0)}% of spend)` : ""}`,
+      evidence: `${formatMoney(recurring, currency)}/mo${totalExpense > 0 ? ` (${((recurring / totalExpense) * 100).toFixed(0)}% of spend)` : ""}`,
       confidence: "high",
       impact: overReliant ? "high" : "medium",
       priority: overReliant ? "medium" : "low",
@@ -211,7 +212,7 @@ export async function computeInsights(
       title: "Weekend spending is high",
       summary: `Weekend outflows are ${((weekendTotal / (weekdayTotal || 1)) * 100).toFixed(0)}% of weekday spending.`,
       explanation: `You spend notably more on weekends than weekdays, a common leak point for discretionary purchases.`,
-      evidence: `Weekend ${formatMoney(weekendTotal)} vs weekday ${formatMoney(weekdayTotal)}`,
+      evidence: `Weekend ${formatMoney(weekendTotal, currency)} vs weekday ${formatMoney(weekdayTotal, currency)}`,
       confidence: "medium",
       impact: "medium",
       priority: "low",
@@ -225,7 +226,7 @@ export async function computeInsights(
       title: "Weekend spending is well controlled",
       summary: `Weekend outflows are only ${((weekendTotal / (weekdayTotal || 1)) * 100).toFixed(0)}% of weekday spending.`,
       explanation: `You keep weekend discretionary spending low relative to weekdays.`,
-      evidence: `Weekend ${formatMoney(weekendTotal)} vs weekday ${formatMoney(weekdayTotal)}`,
+      evidence: `Weekend ${formatMoney(weekendTotal, currency)} vs weekday ${formatMoney(weekdayTotal, currency)}`,
       confidence: "medium",
       impact: "low",
       priority: "low",
@@ -244,8 +245,8 @@ export async function computeInsights(
         id: `yoy-${name}`,
         title: `Year-over-year: ${name}`,
         summary: `${name} is ${yoy >= 0 ? "up" : "down"} ${Math.abs(yoy).toFixed(0)}% vs a year ago.`,
-        explanation: `${name} spending is ${formatMoney(cur)} now versus ${formatMoney(ly)} in the same month last year (${yoy.toFixed(0)}%).`,
-        evidence: `${formatMoney(ly)} → ${formatMoney(cur)} (${yoy.toFixed(0)}% YoY)`,
+        explanation: `${name} spending is ${formatMoney(cur, currency)} now versus ${formatMoney(ly, currency)} in the same month last year (${yoy.toFixed(0)}%).`,
+        evidence: `${formatMoney(ly, currency)} → ${formatMoney(cur, currency)} (${yoy.toFixed(0)}% YoY)`,
         confidence: "medium",
         impact: "low",
         priority: "low",
@@ -268,7 +269,7 @@ export async function computeInsights(
         title: "Unusually large purchase",
         severity: "high",
         detail: "A single transaction is far above your typical purchase size.",
-        evidence: `Largest ${formatMoney(maxSingle)} vs median ${formatMoney(med)}`,
+        evidence: `Largest ${formatMoney(maxSingle, currency)} vs median ${formatMoney(med, currency)}`,
       });
     }
   }
@@ -283,7 +284,7 @@ export async function computeInsights(
         title: "Spending spike this month",
         severity: "medium",
         detail: "Your projected month-end spend is well above last month's total.",
-        evidence: `Run-rate ${formatMoney(runRate)} vs last month ${formatMoney(prevTotalExpense)}`,
+        evidence: `Run-rate ${formatMoney(runRate, currency)} vs last month ${formatMoney(prevTotalExpense, currency)}`,
       });
     }
   }
@@ -306,7 +307,7 @@ export async function computeInsights(
         title: `Over budget: ${budget.name}`,
         severity: spent > amount * 1.25 ? "high" : "medium",
         detail: "You have exceeded this budget for the current month.",
-        evidence: `${formatMoney(spent)} / ${formatMoney(amount)}`,
+        evidence: `${formatMoney(spent, currency)} / ${formatMoney(amount, currency)}`,
       });
     }
   }
@@ -319,7 +320,7 @@ export async function computeInsights(
         title: `Unusual growth in ${name}`,
         severity: "medium",
         detail: "A category grew sharply compared with last month.",
-        evidence: `${formatMoney(prev)} → ${formatMoney(cur)}`,
+        evidence: `${formatMoney(prev, currency)} → ${formatMoney(cur, currency)}`,
       });
     }
   }

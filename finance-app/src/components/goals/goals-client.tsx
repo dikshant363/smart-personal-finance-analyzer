@@ -61,9 +61,11 @@ type Goal = {
 export function GoalsClient({
   goals,
   currency,
+  totals,
 }: {
   goals: Goal[];
   currency: string;
+  totals?: { target: number; saved: number };
 }) {
   const router = useRouter();
   const [open, setOpen] = React.useState(false);
@@ -241,6 +243,8 @@ export function GoalsClient({
   const completedCount = goals.filter((g) => g.status === "completed").length;
   const totalTarget = goals.reduce((sum, g) => sum + (g.status !== "archived" && g.status !== "cancelled" ? g.targetAmount : 0), 0);
   const totalSaved = goals.reduce((sum, g) => sum + (g.status !== "archived" && g.status !== "cancelled" ? g.currentAmount : 0), 0);
+  const displayTarget = totals?.target ?? totalTarget;
+  const displaySaved = totals?.saved ?? totalSaved;
   const overallProgress = totalTarget > 0 ? Math.round((totalSaved / totalTarget) * 100) : 0;
 
   return (
@@ -282,10 +286,10 @@ export function GoalsClient({
           <CardContent className="pt-6">
             <div className="flex items-center justify-between">
               <span className="text-sm font-medium text-neutral-500">Total Saved</span>
-              <span className="text-xs font-semibold text-neutral-400">of {formatMoney(totalTarget, currency)}</span>
+              <span className="text-xs font-semibold text-neutral-400">of {formatMoney(displayTarget, currency)}</span>
             </div>
             <p className="mt-2 text-2xl font-bold text-indigo-600 dark:text-indigo-400">
-              {formatMoney(totalSaved, currency)}
+              {formatMoney(displaySaved, currency)}
             </p>
           </CardContent>
         </Card>

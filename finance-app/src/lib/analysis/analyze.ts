@@ -9,7 +9,12 @@ export type Db = typeof prisma;
 export async function analyzeSpending(userId: string, db: Db = prisma): Promise<AnalysisResult> {
   const cached = getCached<AnalysisResult>(cacheKey(userId, "spending"));
   if (cached) return cached;
-  const { insights, alerts } = await computeInsights(userId, db);
+  const profile = await db.profile.findUnique({
+    where: { userId },
+    select: { currency: true },
+  });
+  const currency = profile?.currency ?? "USD";
+  const { insights, alerts } = await computeInsights(userId, db, currency);
   const trends = await buildTrends(userId, db);
   const result: AnalysisResult = {
     insights,
