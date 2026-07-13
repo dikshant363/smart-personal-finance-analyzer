@@ -1,0 +1,11 @@
+{
+  "name": "@finance/auth-sdk",
+  "version": "11.5.0",
+  "description": "Shared auth credentials memory and session status subscriber library",
+  "main": "index.ts",
+  "types": "index.ts",
+  "license": "MIT",
+  "peerDependencies": {
+    "@finance/shared-types": "^11.1.0"
+  }
+}

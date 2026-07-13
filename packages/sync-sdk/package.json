@@ -1,0 +1,11 @@
+{
+  "name": "@finance/sync-sdk",
+  "version": "11.5.0",
+  "description": "Shared platform-agnostic offline transaction sync queue scheduler",
+  "main": "index.ts",
+  "types": "index.ts",
+  "license": "MIT",
+  "peerDependencies": {
+    "@finance/shared-types": "^11.1.0"
+  }
+}
