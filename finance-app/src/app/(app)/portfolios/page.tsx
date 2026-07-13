@@ -2,7 +2,7 @@ import { redirect } from "next/navigation";
 import { getCurrentUser } from "@/lib/auth";
 import { prisma } from "@/lib/prisma";
 import { getPortfoliosSummary } from "@/lib/portfolio";
-import { PortfolioClient } from "@/components/portfolio/PortfolioClient";
+import { PortfolioClient } from "@/features/portfolio/PortfolioClient";
 
 export default async function PortfoliosPage() {
   const user = await getCurrentUser();

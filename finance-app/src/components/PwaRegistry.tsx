@@ -1,8 +1,8 @@
 "use client";
 
 import { useEffect } from "react";
-import { PWAInstallPrompt } from "@/components/pwa/InstallPrompt";
-import { PWAUpdateManager } from "@/components/pwa/UpdateManager";
+import { PWAInstallPrompt } from "@/features/pwa/InstallPrompt";
+import { PWAUpdateManager } from "@/features/pwa/UpdateManager";
 import { registerServiceWorker } from "@/lib/pwa/engine";
 
 /**

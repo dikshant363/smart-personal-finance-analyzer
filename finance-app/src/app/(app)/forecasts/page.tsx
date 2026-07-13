@@ -1,7 +1,7 @@
 import { redirect } from "next/navigation";
 import { getCurrentUser } from "@/lib/auth";
 import { prisma } from "@/lib/prisma";
-import { ForecastsClient } from "@/components/forecasting/ForecastsClient";
+import { ForecastsClient } from "@/features/forecasting/ForecastsClient";
 
 export default async function ForecastsPage() {
   const user = await getCurrentUser();

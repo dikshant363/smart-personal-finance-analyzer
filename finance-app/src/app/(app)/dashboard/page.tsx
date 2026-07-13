@@ -21,20 +21,20 @@ import {
   TD,
 } from "@/components/ui/Table";
 import { EmptyState } from "@/components/ui/EmptyState";
-import DashboardInsightsWidget from "@/components/dashboard/DashboardInsightsWidget";
+import DashboardInsightsWidget from "@/features/dashboard/DashboardInsightsWidget";
 import { calculateHealthScore } from "@/lib/score/engine";
 import { saveMonthlySnapshot, getHistory } from "@/lib/score/store";
-import { HealthScoreCard } from "@/components/score/HealthScoreCard";
-import { SpendingIntelligence } from "@/components/analysis/SpendingIntelligence";
+import { HealthScoreCard } from "@/features/score/HealthScoreCard";
+import { SpendingIntelligence } from "@/features/analysis/SpendingIntelligence";
 import { listRecommendations } from "@/lib/recommendations/repository";
-import { RecommendationsSummary } from "@/components/recommendations/RecommendationsSummary";
-import { RiskDetector } from "@/components/forecasting/RiskDetector";
-import { AiInsightsFeed } from "@/components/ai-insights/AiInsightsFeed";
-import GoalsWidget from "@/components/goals/GoalsWidget";
-import EmergencyWidget from "@/components/emergency-fund/EmergencyWidget";
-import RecurringWidget from "@/components/recurring/RecurringWidget";
-import TimelineWidget from "@/components/timeline/TimelineWidget";
-import NetWorthWidget from "@/components/asset/NetWorthWidget";
+import { RecommendationsSummary } from "@/features/recommendations/RecommendationsSummary";
+import { RiskDetector } from "@/features/forecasting/RiskDetector";
+import { AiInsightsFeed } from "@/features/ai-insights/AiInsightsFeed";
+import GoalsWidget from "@/features/goals/GoalsWidget";
+import EmergencyWidget from "@/features/emergency-fund/EmergencyWidget";
+import RecurringWidget from "@/features/recurring/RecurringWidget";
+import TimelineWidget from "@/features/timeline/TimelineWidget";
+import NetWorthWidget from "@/features/asset/NetWorthWidget";
 
 export default async function DashboardPage() {
   const user = await getCurrentUser();

@@ -1,7 +1,7 @@
 import { redirect } from "next/navigation";
 import { getCurrentUser } from "@/lib/auth";
 import { prisma } from "@/lib/prisma";
-import { RecommendationsClient } from "@/components/recommendations/RecommendationsClient";
+import { RecommendationsClient } from "@/features/recommendations/RecommendationsClient";
 
 export default async function RecommendationsPage() {
   const user = await getCurrentUser();

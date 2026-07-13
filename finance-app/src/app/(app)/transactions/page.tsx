@@ -3,7 +3,7 @@ import { getCurrentUser } from "@/lib/auth";
 import { prisma } from "@/lib/prisma";
 import { toNumber } from "@/lib/currency";
 import { withBaseCurrency } from "@/lib/currency";
-import { TransactionsClient } from "@/components/transactions/TransactionsClient";
+import { TransactionsClient } from "@/features/transactions/TransactionsClient";
 
 export default async function TransactionsPage() {
   const user = await getCurrentUser();

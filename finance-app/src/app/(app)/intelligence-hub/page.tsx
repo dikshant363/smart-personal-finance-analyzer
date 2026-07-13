@@ -1,5 +1,5 @@
 import { Metadata } from "next";
-import { IntelligenceHubClient } from "@/components/intelligence-hub/IntelligenceHubClient";
+import { IntelligenceHubClient } from "@/features/intelligence-hub/IntelligenceHubClient";
 
 export const metadata: Metadata = {
   title: "Financial Intelligence Hub | IFOS",

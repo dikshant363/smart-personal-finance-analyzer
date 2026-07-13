@@ -1,4 +1,4 @@
-import InsightsPanel from "@/components/insights/InsightsPanel";
+import InsightsPanel from "@/features/insights/InsightsPanel";
 
 export default function InsightsPage() {
   return (

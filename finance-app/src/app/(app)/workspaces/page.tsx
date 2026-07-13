@@ -2,7 +2,7 @@ import { redirect } from "next/navigation";
 import { getCurrentUser } from "@/lib/auth";
 import { prisma } from "@/lib/prisma";
 import { getWorkspacesSummary, createWorkspace } from "@/lib/workspace/engine";
-import { WorkspaceClient } from "@/components/workspace/WorkspaceClient";
+import { WorkspaceClient } from "@/features/workspace/WorkspaceClient";
 
 export default async function WorkspacesPage() {
   const user = await getCurrentUser();

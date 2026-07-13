@@ -1,7 +1,7 @@
 import { redirect } from "next/navigation";
 import { getCurrentUser } from "@/lib/auth";
 import { prisma } from "@/lib/prisma";
-import { ConnectorClient } from "@/components/connector/ConnectorClient";
+import { ConnectorClient } from "@/features/connector/ConnectorClient";
 
 export default async function ConnectorsPage() {
   const user = await getCurrentUser();

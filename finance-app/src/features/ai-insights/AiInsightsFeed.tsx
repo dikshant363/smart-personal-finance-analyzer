@@ -5,7 +5,7 @@ import { RefreshCw, Sparkles } from "lucide-react";
 import { Button } from "@/components/ui/Button";
 import { Card, CardContent } from "@/components/ui/Card";
 import { EmptyState } from "@/components/ui/EmptyState";
-import { InsightCard } from "@/components/ai-insights/InsightCard";
+import { InsightCard } from "@/features/ai-insights/InsightCard";
 import { type AiInsight } from "@/lib/ai-insights";
 import { cn } from "@/lib/utils";
 

@@ -2,7 +2,7 @@ import { redirect } from "next/navigation";
 import { getCurrentUser } from "@/lib/auth";
 import { prisma } from "@/lib/prisma";
 import { getNotifications } from "@/lib/automation";
-import { AutomationClient } from "@/components/automation/AutomationClient";
+import { AutomationClient } from "@/features/automation/AutomationClient";
 
 export default async function AutomationPage() {
   const user = await getCurrentUser();

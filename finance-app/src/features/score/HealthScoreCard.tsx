@@ -2,7 +2,7 @@ import { Badge } from "@/components/ui/Badge";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/Card";
 import { cn } from "@/lib/utils";
 import { ScoreBand } from "@/lib/score/types";
-import { CircularProgress } from "@/components/score/CircularProgress";
+import { CircularProgress } from "@/features/score/CircularProgress";
 
 export function HealthScoreCard({
   score,

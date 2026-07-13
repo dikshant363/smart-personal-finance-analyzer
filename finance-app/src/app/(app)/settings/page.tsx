@@ -1,7 +1,7 @@
 import { redirect } from "next/navigation";
 import { getCurrentUser } from "@/lib/auth";
 import { prisma } from "@/lib/prisma";
-import { SettingsClient } from "@/components/settings/SettingsClient";
+import { SettingsClient } from "@/features/settings/SettingsClient";
 
 export default async function Page() {
   const user = await getCurrentUser();

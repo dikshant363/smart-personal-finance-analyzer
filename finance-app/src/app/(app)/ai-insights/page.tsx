@@ -1,7 +1,7 @@
 import { redirect } from "next/navigation";
 import { getCurrentUser } from "@/lib/auth";
 import { prisma } from "@/lib/prisma";
-import { AiInsightsFeed } from "@/components/ai-insights/AiInsightsFeed";
+import { AiInsightsFeed } from "@/features/ai-insights/AiInsightsFeed";
 import { Card, CardContent } from "@/components/ui/Card";
 import { EmptyState } from "@/components/ui/EmptyState";
 

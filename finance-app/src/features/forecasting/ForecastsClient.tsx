@@ -8,11 +8,11 @@ import { Label } from "@/components/ui/Label";
 import { Select } from "@/components/ui/Select";
 import { Button } from "@/components/ui/Button";
 import { EmptyState } from "@/components/ui/EmptyState";
-import { ForecastCard } from "@/components/forecasting/ForecastCard";
-import { ForecastTimeline } from "@/components/forecasting/ForecastTimeline";
-import { ScenarioComparison } from "@/components/forecasting/ScenarioComparison";
-import { RiskDetector } from "@/components/forecasting/RiskDetector";
-import { WhatIfPanel } from "@/components/forecasting/WhatIfPanel";
+import { ForecastCard } from "@/features/forecasting/ForecastCard";
+import { ForecastTimeline } from "@/features/forecasting/ForecastTimeline";
+import { ScenarioComparison } from "@/features/forecasting/ScenarioComparison";
+import { RiskDetector } from "@/features/forecasting/RiskDetector";
+import { WhatIfPanel } from "@/features/forecasting/WhatIfPanel";
 import { cn } from "@/lib/utils";
 
 const PERIODS: ForecastPeriod[] = ["7d", "30d", "90d", "6m", "1y"];

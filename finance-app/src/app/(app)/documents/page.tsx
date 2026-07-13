@@ -2,7 +2,7 @@ import { redirect } from "next/navigation";
 import { getCurrentUser } from "@/lib/auth";
 import { prisma } from "@/lib/prisma";
 import { listProcessedDocuments } from "@/lib/receipts/repository";
-import { DocumentClient } from "@/components/receipts/DocumentClient";
+import { DocumentClient } from "@/features/receipts/DocumentClient";
 
 export default async function DocumentsPage() {
   const user = await getCurrentUser();

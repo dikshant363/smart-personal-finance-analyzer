@@ -2,7 +2,7 @@ import { redirect } from "next/navigation";
 import { getCurrentUser } from "@/lib/auth";
 import { prisma } from "@/lib/prisma";
 import { getDebtOverview, calculateDebtHealthScore, simulateRepaymentStrategy, getDebtAiExplanation } from "@/lib/debt";
-import { DebtClient } from "@/components/debt/DebtClient";
+import { DebtClient } from "@/features/debt/DebtClient";
 
 export default async function DebtPage() {
   const user = await getCurrentUser();

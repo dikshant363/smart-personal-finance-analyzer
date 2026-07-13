@@ -3,7 +3,7 @@ import { getCurrentUser } from "@/lib/auth";
 import { prisma } from "@/lib/prisma";
 import { toNumber, getLatestRateMap } from "@/lib/currency";
 import { listGoals } from "@/lib/goals";
-import { GoalsClient } from "@/components/goals/GoalsClient";
+import { GoalsClient } from "@/features/goals/GoalsClient";
 
 export default async function GoalsPage() {
   const user = await getCurrentUser();

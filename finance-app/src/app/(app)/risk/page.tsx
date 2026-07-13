@@ -1,5 +1,5 @@
 import { Metadata } from "next";
-import RiskClient from "@/components/risk/RiskClient";
+import RiskClient from "@/features/risk/RiskClient";
 
 export const metadata: Metadata = {
   title: "Risk Management & Insurance | Smart Personal Finance Analyzer",

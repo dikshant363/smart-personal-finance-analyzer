@@ -1,5 +1,5 @@
 import { Metadata } from "next";
-import CollaborationClient from "@/components/collaboration/CollaborationClient";
+import CollaborationClient from "@/features/collaboration/CollaborationClient";
 
 export const metadata: Metadata = {
   title: "Professional Collaboration & Review | Smart Personal Finance Analyzer",

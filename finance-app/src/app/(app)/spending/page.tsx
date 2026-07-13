@@ -2,7 +2,7 @@ import { redirect } from "next/navigation";
 import { getCurrentUser } from "@/lib/auth";
 import { prisma } from "@/lib/prisma";
 import { analyzeSpending } from "@/lib/analysis/analyze";
-import { SpendingIntelligence } from "@/components/analysis/SpendingIntelligence";
+import { SpendingIntelligence } from "@/features/analysis/SpendingIntelligence";
 
 export default async function SpendingPage() {
   const user = await getCurrentUser();

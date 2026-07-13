@@ -2,7 +2,7 @@ import { redirect } from "next/navigation";
 import { getCurrentUser } from "@/lib/auth";
 import { prisma } from "@/lib/prisma";
 import { getNetWorthSummary, getAssetAllocation, projectNetWorth, getAssetAiExplanation } from "@/lib/asset";
-import { NetWorthClient } from "@/components/asset/NetWorthClient";
+import { NetWorthClient } from "@/features/asset/NetWorthClient";
 
 export default async function NetWorthPage() {
   const user = await getCurrentUser();
