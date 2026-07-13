@@ -35,11 +35,29 @@ export class ObservabilityService {
     return telemetryRegistry.filter((e) => e.category === category);
   }
 
-  static getSystemHealth(): { status: string; uptimeSec: number; dbOk: boolean } {
+  static logStructured(
+    level: "Trace" | "Debug" | "Info" | "Warning" | "Error" | "Critical",
+    message: string,
+    meta: any = {}
+  ) {
+    const logObj = {
+      timestamp: new Date().toISOString(),
+      level,
+      message,
+      correlationId: meta.correlationId || "corr_default",
+      workspaceId: meta.workspaceId || "ws_default",
+      metadata: meta,
+    };
+    return logObj;
+  }
+
+  static getSystemHealth(): { status: string; uptimeSec: number; dbOk: boolean; memory: any; cpu: any } {
     return {
       status: "Healthy",
       uptimeSec: process.uptime(),
       dbOk: true,
+      memory: process.memoryUsage(),
+      cpu: process.cpuUsage(),
     };
   }
 

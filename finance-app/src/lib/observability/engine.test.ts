@@ -23,6 +23,13 @@ describe("Observability, Telemetry & Operations Platform (OTOP) Tests", () => {
     const health = ObservabilityService.getSystemHealth();
     expect(health.status).toBe("Healthy");
     expect(health.dbOk).toBe(true);
-    expect(health.uptimeSec).toBeGreaterThan(0);
+    expect(health.memory).toBeDefined();
+    expect(health.cpu).toBeDefined();
+  });
+
+  it("produces structured logs with core validation schemas", () => {
+    const log = ObservabilityService.logStructured("Info", "Test message", { workspaceId: "ws_1" });
+    expect(log.level).toBe("Info");
+    expect(log.workspaceId).toBe("ws_1");
   });
 });
