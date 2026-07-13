@@ -9,7 +9,7 @@ export interface SecureStorage {
   removeItem(key: string): Promise<void>;
 }
 
-/** In-memory fallback secure store with encryption mocks */
+/** In-memory fallback secure store with encoding mocks */
 class FallbackSecureStore implements SecureStorage {
   private store = new Map<string, string>();
 
@@ -17,7 +17,7 @@ class FallbackSecureStore implements SecureStorage {
     const raw = this.store.get(key);
     if (!raw) return null;
     try {
-      // Decode mock base64 encryption
+      // Decode mock base64 encoding
       return typeof window !== "undefined" ? atob(raw) : Buffer.from(raw, "base64").toString("utf-8");
     } catch {
       return null;
