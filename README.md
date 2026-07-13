@@ -1,6 +1,19 @@
-# Smart Personal Finance Analyzer — Monorepo
+# Smart Personal Finance Analyzer — India-First Multi-Platform Experience Platform (MPEP)
 
-This is the root of the **Smart Personal Finance Analyzer** monorepo, housing all platform applications and shared packages.
+This is the root of the **Smart Personal Finance Analyzer** monorepo, housing all platform applications and shared packages, configured by default for India-First operations.
+
+---
+
+## 🇮🇳 India-First Default Configuration
+
+The platform defaults entirely to Indian financial jurisdictions:
+- **Primary Currency**: Indian Rupee (`INR`, `₹`)
+- **Formatting**: Indian Numbering System (Lakh/Crore groupings: e.g. `₹1,00,000` / `₹10,00,000`)
+- **Financial Year**: 1 April – 31 March
+- **Local Banking & Payments**: UPI-first transactional workflows and alerts.
+- **Investments**: Priority support for Systematic Investment Plans (SIPs), Public Provident Fund (PPF), Employee Provident Fund (EPF), and National Pension System (NPS).
+
+---
 
 ## Structure
 
@@ -12,14 +25,13 @@ This is the root of the **Smart Personal Finance Analyzer** monorepo, housing al
 │   ├── ios/              # Swift/SwiftUI Apple app
 │   └── desktop/          # Tauri 2 desktop app
 └── packages/
+    ├── shared-config/    # Extensible Country Configuration pack (defaults to INDPack)
     ├── shared-types/     # Canonical TypeScript DTOs for all clients
     ├── shared-models/    # Domain utilities (formatting, calculations)
     ├── shared-validation/# Validation rules and error codes
     ├── ui/               # Design tokens (colors, typography, spacing)
     ├── api-sdk/          # HTTP API client with retry/refresh
     ├── auth-sdk/         # Authentication session management
-    ├── finance-sdk/      # Finance domain operations
-    ├── ai-sdk/           # AI copilot interface
     └── sync-sdk/         # Offline sync engine
 ```
 
@@ -28,12 +40,6 @@ This is the root of the **Smart Personal Finance Analyzer** monorepo, housing al
 > **Every platform uses the same backend. Business logic lives on the server. Clients are thin presentation layers.**
 
 All client platforms (Web, Android, iOS, Desktop) consume the identical REST API. No platform has a separate backend. No business logic is duplicated across clients.
-
-## Shared Backend
-
-The Next.js application (`finance-app/`) serves as both:
-1. The **web application** frontend
-2. The **shared REST API backend** for all native clients
 
 ## Running the Web Application
 
@@ -58,8 +64,8 @@ npm run build
 
 | Platform | Language | Version |
 |----------|----------|---------|
-| Web | Next.js + TypeScript | v11.x |
-| PWA | Service Worker | v11.x |
-| Android | Kotlin + Jetpack Compose | v11.3+ |
-| iOS | Swift + SwiftUI | v11.4+ |
-| Desktop | Tauri 2 + Rust | v11.6+ |
+| Web | Next.js + TypeScript | v1.0.0 |
+| PWA | Service Worker | v1.0.0 |
+| Android | Kotlin + Jetpack Compose | v1.0.0 |
+| iOS | Swift + SwiftUI | v1.0.0 |
+| Desktop | Tauri 2 + Rust | v1.0.0 |
