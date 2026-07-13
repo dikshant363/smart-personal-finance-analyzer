@@ -1,0 +1,11 @@
+{
+  "name": "@finance/shared-models",
+  "version": "11.1.0",
+  "description": "Shared business domain models and transformation utilities",
+  "main": "index.ts",
+  "types": "index.ts",
+  "license": "MIT",
+  "peerDependencies": {
+    "@finance/shared-types": "^11.1.0"
+  }
+}

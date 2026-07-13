@@ -1,0 +1,8 @@
+{
+  "name": "@finance/shared-validation",
+  "version": "11.1.0",
+  "description": "Shared validation rules and error codes for all platform clients",
+  "main": "index.ts",
+  "types": "index.ts",
+  "license": "MIT"
+}

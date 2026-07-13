@@ -1,0 +1,9 @@
+{
+  "name": "@finance/shared-types",
+  "version": "11.1.0",
+  "description": "Shared canonical TypeScript type definitions for all platform clients",
+  "main": "index.ts",
+  "types": "index.ts",
+  "license": "MIT",
+  "keywords": ["finance", "shared", "types", "multi-platform"]
+}

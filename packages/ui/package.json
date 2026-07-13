@@ -1,0 +1,8 @@
+{
+  "name": "@finance/ui",
+  "version": "11.1.0",
+  "description": "Shared design tokens and UI primitives for all platform clients",
+  "main": "tokens.ts",
+  "types": "tokens.ts",
+  "license": "MIT"
+}
