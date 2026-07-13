@@ -1,0 +1,8 @@
+{
+  "name": "@finance/shared-config",
+  "version": "11.9.0",
+  "description": "Shared Country Configuration and Localization Pack registry",
+  "main": "index.ts",
+  "types": "index.ts",
+  "license": "MIT"
+}

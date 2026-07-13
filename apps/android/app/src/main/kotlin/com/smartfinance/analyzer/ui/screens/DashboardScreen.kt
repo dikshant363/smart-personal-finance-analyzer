@@ -187,5 +187,5 @@ private fun TransactionListItem(transaction: com.smartfinance.analyzer.domain.mo
 }
 
 private fun formatCurrency(amount: Double): String {
-    return "$${String.format("%.2f", amount)}"
+    return "₹${String.format("%.2f", amount)}"
 }

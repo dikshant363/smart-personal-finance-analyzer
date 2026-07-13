@@ -2,24 +2,33 @@
  * PWA Engine Tests
  * Sprint 11.2 — Progressive Web Application Platform
  */
-import { describe, it, expect, vi, beforeEach } from "vitest";
+import { describe, it, expect, vi, beforeEach, afterEach } from "vitest";
 import { isStandalonePWA, isOnline, shareContent } from "./engine";
 
 describe("PWA Engine", () => {
+  const originalWindow = global.window;
+
   beforeEach(() => {
     vi.resetAllMocks();
+    // Setup minimal window mock
+    (global as any).window = {
+      matchMedia: vi.fn().mockReturnValue({ matches: false }),
+      navigator: { standalone: false }
+    };
+  });
+
+  afterEach(() => {
+    global.window = originalWindow;
   });
 
   describe("isStandalonePWA", () => {
     it("returns false when matchMedia is not available", () => {
-      const original = window.matchMedia;
-      window.matchMedia = vi.fn().mockReturnValue({ matches: false });
+      (global as any).window.matchMedia = undefined;
       expect(isStandalonePWA()).toBe(false);
-      window.matchMedia = original;
     });
 
     it("returns true when display-mode is standalone", () => {
-      window.matchMedia = vi.fn().mockReturnValue({ matches: true });
+      (global as any).window.matchMedia = vi.fn().mockReturnValue({ matches: true });
       expect(isStandalonePWA()).toBe(true);
     });
   });

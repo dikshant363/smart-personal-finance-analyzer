@@ -46,7 +46,7 @@ fun TransactionsScreen(
                     supportingContent = { Text("${tx.date.take(10)} · ${tx.categoryName ?: "Uncategorized"}") },
                     trailingContent = {
                         Text(
-                            text = "${if (tx.type == TransactionType.Expense) "-" else "+"}$${String.format("%.2f", tx.amount)}",
+                            text = "${if (tx.type == TransactionType.Expense) "-" else "+"}₹${String.format("%.2f", tx.amount)}",
                             color = if (tx.type == TransactionType.Expense)
                                 MaterialTheme.colorScheme.error
                             else

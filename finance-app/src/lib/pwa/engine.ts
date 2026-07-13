@@ -50,7 +50,7 @@ export async function registerServiceWorker(
 export function isStandalonePWA(): boolean {
   if (typeof window === "undefined") return false;
   return (
-    window.matchMedia("(display-mode: standalone)").matches ||
+    (typeof window.matchMedia === "function" && window.matchMedia("(display-mode: standalone)").matches) ||
     ("standalone" in window.navigator && (window.navigator as { standalone?: boolean }).standalone === true)
   );
 }
@@ -60,7 +60,7 @@ export function isStandalonePWA(): boolean {
  */
 export function isOnline(): boolean {
   if (typeof navigator === "undefined") return true;
-  return navigator.onLine;
+  return navigator.onLine !== false;
 }
 
 /**

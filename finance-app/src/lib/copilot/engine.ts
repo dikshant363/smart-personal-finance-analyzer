@@ -31,24 +31,32 @@ export class MockGeminiProvider implements LlmProvider {
   async generate(prompt: string, context: CopilotContext): Promise<string> {
     const q = prompt.toLowerCase();
 
+    if (q.includes("retirement") || q.includes("savings") || q.includes("ppf") || q.includes("epf")) {
+      return `For long-term wealth creation, our core engines recommend maximizing your Public Provident Fund (PPF) and Employees' Provident Fund (EPF) contributions to utilize Section 80C exemptions. Consider systematic investment plans (SIPs) in diversified mutual funds for inflation-beating equity exposure. Current net worth: **${formatMoney(context.netWorth, context.currency)}**.`;
+    }
+
+    if (q.includes("payment") || q.includes("transfer") || q.includes("upi")) {
+      return `Your digital payment transactions are routed through UPI and IMPS bank transfer protocols. UPI remains the primary transactional driver. Tips: Configure your UPI autopey thresholds inside recurring settings to prevent bank account overdrawing.`;
+    }
+
     if (q.includes("health") || q.includes("score")) {
-      return `Based on our platform-wide deterministic engines, your current Debt Health Score is **${context.debtHealthScore}/100**. This rating factors in outstanding credit balances and debt-to-income limits. Fact: Your leverage ratios are stable. Recommendations: Continue checking budget margins regularly.`;
+      return `Based on our platform-wide deterministic engines, your current Financial Health Score is **${context.debtHealthScore}/100**. This rating factors in debt liabilities (like credit card EMI and housing loans) relative to your monthly income. Fact: Your leverage ratios are stable. Recommendations: Continue checking budget margins regularly.`;
     }
 
     if (q.includes("net worth") || q.includes("assets") || q.includes("wealth")) {
-      return `According to the Net Worth Engine, your total assets stand at **${formatMoney(context.totalAssets, context.currency)}**, with outstanding debt liabilities of **${formatMoney(context.totalDebt, context.currency)}**. Converted Net Worth sum = **${formatMoney(context.netWorth, context.currency)}**. Limitations: This forecast path reflects current compound appreciation rates without including manual modifications.`;
+      return `According to the Net Worth Engine, your total assets stand at **${formatMoney(context.totalAssets, context.currency)}**, with outstanding debt liabilities of **${formatMoney(context.totalDebt, context.currency)}**. Converted Net Worth sum = **${formatMoney(context.netWorth, context.currency)}**. Lakh and Crore formatting conforms to standard Indian numbering conventions.`;
     }
 
     if (q.includes("portfolio") || q.includes("accounts")) {
-      return `Our Account Engine tracks **${context.portfoliosCount}** distinct portfolio group vaults for your user profile. Safe cash transfers between accounts are logged. Facts: Assets are securely partitioned. Recommendations: Allocate cash reserves to your family workspace hubs to support shared budget goals.`;
+      return `Our Account Engine tracks **${context.portfoliosCount}** distinct portfolio group vaults (Fixed Deposits, Mutual Funds, Equities, and Savings Accounts) for your user profile. Safe cash transfers between accounts are logged. Facts: Assets are securely partitioned. Recommendations: Allocate cash reserves to your family workspace hubs to support shared budget goals.`;
     }
 
     // Default catch-all
-    return `Hello! I am your Antigravity AI Financial Copilot. I can analyze and explain data calculated by our core engines:
+    return `Namaste! I am your Antigravity AI Financial Copilot. I can analyze and explain data calculated by our core engines:
 - **Net Worth**: ${formatMoney(context.netWorth, context.currency)} (Assets: ${formatMoney(context.totalAssets, context.currency)})
 - **Debt**: ${formatMoney(context.totalDebt, context.currency)} (Score: ${context.debtHealthScore}/100)
-- **Portfolios**: ${context.portfoliosCount} active portfolio vaults.
-What specific financial insights or budget questions can I explain for you today?`;
+- **Accounts**: ${context.portfoliosCount} active portfolio vaults.
+What specific financial insights regarding your SIPs, PPF contributions, or UPI budget questions can I explain for you today?`;
   }
 }
 

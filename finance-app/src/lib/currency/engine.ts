@@ -7,12 +7,17 @@ export function toNumber(value: Decimal | number | null | undefined): number {
   return Number(value.toNumber());
 }
 
+import { getActiveConfig } from "@finance/shared-config";
+
 export function formatMoney(
   amount: number | string,
-  currency = "USD",
-  locale = "en-US"
+  currency?: string,
+  locale?: string
 ): string {
-  return new Intl.NumberFormat(locale, { style: "currency", currency }).format(Number(amount));
+  const config = getActiveConfig();
+  const targetCurrency = currency ?? config.currency.code;
+  const targetLocale = locale ?? config.localization.defaultLocale;
+  return new Intl.NumberFormat(targetLocale, { style: "currency", currency: targetCurrency }).format(Number(amount));
 }
 
 export interface CurrencyAllocation {
@@ -207,13 +212,13 @@ export async function convertWithMeta(
   };
 }
 
-/** Returns the user's base/default currency from their Profile, defaulting to "USD". */
+/** Returns the user's base/default currency from their Profile, defaulting to config currency. */
 export async function getBaseCurrency(userId: string, db = prisma): Promise<string> {
   const profile = await db.profile.findUnique({
     where: { userId },
     select: { currency: true },
   });
-  return profile?.currency ?? "USD";
+  return profile?.currency ?? getActiveConfig().currency.code;
 }
 
 /**

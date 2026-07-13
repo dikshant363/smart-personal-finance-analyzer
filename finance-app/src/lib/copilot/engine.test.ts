@@ -55,6 +55,6 @@ describe("Financial Intelligence Copilot Platform (FICP) Tests", () => {
 
     const response = await provider.generate("Tell me about my score", context);
 
-    expect(response).toContain("Debt Health Score is **85/100**");
+    expect(response).toContain("Health Score is **85/100**");
   });
 });

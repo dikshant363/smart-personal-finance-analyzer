@@ -1,3 +1,5 @@
+import { getActiveConfig } from "@finance/shared-config";
+
 export type SupportedLocale = "en-US" | "en-GB" | "en-IN" | "de-DE";
 
 export const DICTIONARY: Record<SupportedLocale, Record<string, string>> = {
@@ -23,29 +25,46 @@ export const DICTIONARY: Record<SupportedLocale, Record<string, string>> = {
   },
 };
 
-export function translate(key: string, locale: SupportedLocale = "en-US"): string {
-  const dict = DICTIONARY[locale] || DICTIONARY["en-US"];
-  return dict[key] || DICTIONARY["en-US"][key] || key;
+/**
+ * Translates a key based on the active config default locale or provided override.
+ */
+export function translate(key: string, locale?: SupportedLocale): string {
+  const config = getActiveConfig();
+  const targetLocale = (locale ?? config.localization.defaultLocale) as SupportedLocale;
+  const dict = DICTIONARY[targetLocale] || DICTIONARY["en-IN"];
+  return dict[key] || DICTIONARY["en-IN"][key] || key;
 }
 
+/**
+ * Formats currency values respecting CountryConfig rules (Lakh/Crore by default).
+ */
 export function formatCurrencyLocal(
   amount: number,
-  locale: SupportedLocale = "en-US",
-  currency = "USD"
+  locale?: SupportedLocale,
+  currency?: string
 ): string {
+  const config = getActiveConfig();
+  const targetLocale = (locale ?? config.localization.defaultLocale) as SupportedLocale;
+  const targetCurrency = currency ?? config.currency.code;
+
   try {
-    return new Intl.NumberFormat(locale, {
+    return new Intl.NumberFormat(targetLocale, {
       style: "currency",
-      currency,
+      currency: targetCurrency,
     }).format(amount);
   } catch {
-    return `${currency} ${amount.toFixed(2)}`;
+    return `${targetCurrency} ${amount.toFixed(2)}`;
   }
 }
 
-export function formatDateLocal(date: Date, locale: SupportedLocale = "en-US"): string {
+/**
+ * Formats dates respecting default configuration criteria.
+ */
+export function formatDateLocal(date: Date, locale?: SupportedLocale): string {
+  const config = getActiveConfig();
+  const targetLocale = (locale ?? config.localization.defaultLocale) as SupportedLocale;
   try {
-    return new Intl.DateTimeFormat(locale, {
+    return new Intl.DateTimeFormat(targetLocale, {
       dateStyle: "medium",
     }).format(date);
   } catch {

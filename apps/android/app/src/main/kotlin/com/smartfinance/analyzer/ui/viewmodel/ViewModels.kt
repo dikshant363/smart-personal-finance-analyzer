@@ -37,9 +37,9 @@ class DashboardViewModel @Inject constructor() : ViewModel() {
             _uiState.update { it.copy(isLoading = true) }
             // Mock or offline database retrieval representation
             val mockTx = listOf(
-                Transaction("1", "u1", 120.0, "USD", TransactionType.Expense, "Groceries", "2026-07-13", "cat1", "Food", TransactionSource.Manual, "2026-07-13", "2026-07-13"),
-                Transaction("2", "u1", 2500.0, "USD", TransactionType.Income, "Salary", "2026-07-01", "cat2", "Salary", TransactionSource.BankSync, "2026-07-01", "2026-07-01"),
-                Transaction("3", "u1", 15.50, "USD", TransactionType.Expense, "Coffee", "2026-07-12", "cat1", "Food", TransactionSource.Manual, "2026-07-12", "2026-07-12")
+                Transaction("1", "u1", 120.0, "INR", TransactionType.Expense, "Groceries", "2026-07-13", "cat1", "Food", TransactionSource.Manual, "2026-07-13", "2026-07-13"),
+                Transaction("2", "u1", 2500.0, "INR", TransactionType.Income, "Salary", "2026-07-01", "cat2", "Salary", TransactionSource.BankSync, "2026-07-01", "2026-07-01"),
+                Transaction("3", "u1", 15.50, "INR", TransactionType.Expense, "Coffee", "2026-07-12", "cat1", "Food", TransactionSource.Manual, "2026-07-12", "2026-07-12")
             )
             _uiState.update {
                 it.copy(
@@ -73,9 +73,9 @@ class TransactionsViewModel @Inject constructor() : ViewModel() {
         viewModelScope.launch {
             _uiState.update { it.copy(isLoading = true) }
             val mockTx = listOf(
-                Transaction("1", "u1", 120.0, "USD", TransactionType.Expense, "Groceries", "2026-07-13", "cat1", "Food", TransactionSource.Manual, "2026-07-13", "2026-07-13"),
-                Transaction("2", "u1", 2500.0, "USD", TransactionType.Income, "Salary", "2026-07-01", "cat2", "Salary", TransactionSource.BankSync, "2026-07-01", "2026-07-01"),
-                Transaction("3", "u1", 15.50, "USD", TransactionType.Expense, "Coffee", "2026-07-12", "cat1", "Food", TransactionSource.Manual, "2026-07-12", "2026-07-12")
+                Transaction("1", "u1", 120.0, "INR", TransactionType.Expense, "Groceries", "2026-07-13", "cat1", "Food", TransactionSource.Manual, "2026-07-13", "2026-07-13"),
+                Transaction("2", "u1", 2500.0, "INR", TransactionType.Income, "Salary", "2026-07-01", "cat2", "Salary", TransactionSource.BankSync, "2026-07-01", "2026-07-01"),
+                Transaction("3", "u1", 15.50, "INR", TransactionType.Expense, "Coffee", "2026-07-12", "cat1", "Food", TransactionSource.Manual, "2026-07-12", "2026-07-12")
             )
             _uiState.update {
                 it.copy(

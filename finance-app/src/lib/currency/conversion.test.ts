@@ -70,12 +70,12 @@ describe("Sprint 9.9 — integration-style conversion tests", () => {
     expect(result).toBe("EUR");
   });
 
-  it("getBaseCurrency defaults to USD", async () => {
+  it("getBaseCurrency defaults to INR", async () => {
     (prisma.profile.findUnique as any).mockResolvedValueOnce(null);
 
     const result = await getBaseCurrency("u1");
 
-    expect(result).toBe("USD");
+    expect(result).toBe("INR");
   });
 
   it("getLatestRateMap returns 1 for base and rates for others", async () => {

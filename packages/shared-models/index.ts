@@ -14,16 +14,16 @@ import type {
 
 export type { TransactionDTO, BudgetDTO, GoalDTO, UserDTO, AssetDTO, LiabilityDTO };
 
-/** Creates a zero-value Transaction for optimistic UI before API response */
 export function createOptimisticTransaction(
   partial: Partial<TransactionDTO> & { userId: string }
 ): TransactionDTO {
+  const config = getActiveConfig();
   const now = new Date().toISOString();
   return {
     id: `optimistic-${Date.now()}`,
     userId: partial.userId,
     amount: partial.amount ?? 0,
-    currency: partial.currency ?? "USD",
+    currency: partial.currency ?? config.currency.code,
     type: partial.type ?? "Expense",
     description: partial.description ?? "",
     date: partial.date ?? now,
@@ -56,19 +56,26 @@ export function calculateNetWorth(
   return totalAssets - totalLiabilities;
 }
 
-/** Formats currency value using Intl */
+import { getActiveConfig } from "../shared-config/index";
+
+/** Formats currency value using Intl and CountryConfig defaults */
 export function formatCurrency(
   amount: number,
-  currency = "USD",
-  locale = "en-US"
+  currency?: string,
+  locale?: string
 ): string {
-  return new Intl.NumberFormat(locale, {
+  const config = getActiveConfig();
+  const targetCurrency = currency ?? config.currency.code;
+  const targetLocale = locale ?? config.localization.defaultLocale;
+
+  return new Intl.NumberFormat(targetLocale, {
     style: "currency",
-    currency,
+    currency: targetCurrency,
     minimumFractionDigits: 2,
     maximumFractionDigits: 2,
   }).format(amount);
 }
+
 
 /** Calculates goal progress as a percentage (0-100) */
 export function goalProgressPercent(goal: GoalDTO): number {
