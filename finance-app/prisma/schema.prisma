@@ -76,6 +76,7 @@ model User {
   CollaborationInvitation CollaborationInvitation[]
   CollaboratorShare       CollaboratorShare[]
   ReviewRequest           ReviewRequest[]
+  DeveloperExtension      DeveloperExtension[]
 }
 
 model Goal {
@@ -888,6 +889,23 @@ model CollaborationAudit {
   action    String // e.g. "INVITATION_SENT", "PERMISSION_CHANGED", "DOWNLOAD_REPORT", "COMMENT_ADDED"
   details   String
   timestamp DateTime @default(now())
+
+  @@index([userId])
+}
+
+model DeveloperExtension {
+  id          String   @id @default(cuid())
+  userId      String
+  user        User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  name        String
+  version     String
+  author      String
+  description String?
+  permissions String // comma-separated list
+  status      String   @default("Disabled") // "Enabled", "Disabled"
+  webhookUrl  String?
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
 
   @@index([userId])
 }
