@@ -936,3 +936,39 @@ model BankConnection {
 
   @@index([userId])
 }
+
+model HouseholdProfile {
+  id        String            @id @default(cuid())
+  name      String
+  ownerId   String
+  currency  String            @default("USD")
+  timezone  String            @default("UTC")
+  createdAt DateTime          @default(now())
+  updatedAt DateTime          @updatedAt
+  members   HouseholdMember[]
+  splits    ExpenseSplit[]
+}
+
+model HouseholdMember {
+  id          String           @id @default(cuid())
+  householdId String
+  household   HouseholdProfile @relation(fields: [householdId], references: [id], onDelete: Cascade)
+  userId      String
+  role        String           @default("Adult")
+  createdAt   DateTime         @default(now())
+
+  @@index([householdId])
+}
+
+model ExpenseSplit {
+  id            String           @id @default(cuid())
+  transactionId String
+  householdId   String
+  household     HouseholdProfile @relation(fields: [householdId], references: [id], onDelete: Cascade)
+  splitType     String           @default("Equal")
+  shares        String
+  status        String           @default("Pending")
+  createdAt     DateTime         @default(now())
+
+  @@index([householdId])
+}
