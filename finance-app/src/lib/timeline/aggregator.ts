@@ -20,7 +20,11 @@ export interface TimelineEvent {
     | "Recommendation"
     | "HealthChange"
     | "ForecastRisk"
-    | "DocumentProcessed";
+    | "DocumentProcessed"
+    | "InvestmentPurchase"
+    | "InvestmentSale"
+    | "DividendReceived"
+    | "PortfolioMilestone";
   priority: "high" | "medium" | "low";
   timestamp: Date;
   status: "Upcoming" | "Scheduled" | "Completed" | "Cancelled" | "Missed" | "Overdue";
@@ -142,5 +146,77 @@ export async function getUnifiedTimeline(
     console.error("Timeline aggregate score error:", err);
   }
 
+  // 6. Fetch Investments (purchases/sales/milestones)
+  try {
+    const investmentDelegate = (db as any).investment;
+    if (investmentDelegate) {
+      const investments = await investmentDelegate.findMany({
+        where: {
+          userId,
+          purchaseDate: { gte: start, lte: end },
+        },
+      });
+      for (const inv of investments) {
+        events.push({
+          id: `inv_purchase_${inv.id}`,
+          title: `Investment Purchased: ${inv.name}`,
+          description: `Asset Class: ${inv.assetClass}. Quantity: ${inv.quantity} @ ${inv.purchasePrice} ${inv.currency}`,
+          type: "InvestmentPurchase",
+          priority: "medium",
+          timestamp: new Date(inv.purchaseDate),
+          status: "Completed",
+          module: "Investments",
+          amount: inv.purchasePrice * inv.quantity,
+        });
+
+        if (inv.status === "Sold") {
+          events.push({
+            id: `inv_sale_${inv.id}`,
+            title: `Investment Sold: ${inv.name}`,
+            description: `Asset Class: ${inv.assetClass}. Current valuation: ${inv.currentValue} ${inv.currency}`,
+            type: "InvestmentSale",
+            priority: "medium",
+            timestamp: new Date(inv.updatedAt),
+            status: "Completed",
+            module: "Investments",
+            amount: inv.currentValue,
+          });
+        }
+      }
+    }
+  } catch (err) {
+    console.error("Timeline aggregate investments error:", err);
+  }
+
+  // 7. Fetch Dividends
+  try {
+    const dividendDelegate = (db as any).dividend;
+    if (dividendDelegate) {
+      const dividends = await dividendDelegate.findMany({
+        where: {
+          investment: { userId },
+          dividendDate: { gte: start, lte: end },
+        },
+        include: { investment: true },
+      });
+      for (const div of dividends) {
+        events.push({
+          id: `div_${div.id}`,
+          title: `Dividend Received: ${div.investment.name}`,
+          description: `Amount: ${div.amount} ${div.currency}. Reinvestment: ${div.reinvestmentStatus}`,
+          type: "DividendReceived",
+          priority: "low",
+          timestamp: new Date(div.dividendDate),
+          status: "Completed",
+          module: "Investments",
+          amount: div.amount,
+        });
+      }
+    }
+  } catch (err) {
+    console.error("Timeline aggregate dividends error:", err);
+  }
+
   return events.sort((a, b) => b.timestamp.getTime() - a.timestamp.getTime());
 }
+

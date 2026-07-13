@@ -28,10 +28,27 @@ export async function getNetWorthSummary(
     where: { userId, status: "Active" },
   });
 
-  const totalAssets = assets.reduce(
+  let totalAssets = assets.reduce(
     (sum, asset) => sum + toNumber(asset.currentValue) * (parseFloat(asset.ownership) / 100),
     0
   );
+
+  // Dynamic integration of active investments holdings valuation
+  try {
+    const investmentDelegate = (db as any).investment;
+    if (investmentDelegate) {
+      const investments = await investmentDelegate.findMany({
+        where: { userId, status: "Active" },
+      });
+      const totalInvestments = investments.reduce(
+        (sum: number, inv: any) => sum + toNumber(inv.currentValue),
+        0
+      );
+      totalAssets += totalInvestments;
+    }
+  } catch (err) {
+    // Ignore if table doesn't exist
+  }
 
   // Liabilities stub: will be updated to query the database in Sprint 4.2
   let totalLiabilities = 0;

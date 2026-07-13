@@ -39,60 +39,64 @@ model User {
   updatedAt    DateTime  @updatedAt
   deletedAt    DateTime?
 
-  profile      Profile?
-  settings     UserSettings?
-  categories   Category[]
-  transactions Transaction[]
-  budgets      Budget[]
-  scoreHistory ScoreHistory[]
-  recommendations Recommendation[]
-  forecasts      Forecast[]
-  aiInsights     AiInsight[]
-  goals          Goal[]
-  emergencyFundSettings EmergencyFundSettings?
-  emergencyFundHistory  EmergencyFundHistory[]
-  recurringItems        RecurringItem[]
+  profile                Profile?
+  settings               UserSettings?
+  categories             Category[]
+  transactions           Transaction[]
+  budgets                Budget[]
+  scoreHistory           ScoreHistory[]
+  recommendations        Recommendation[]
+  forecasts              Forecast[]
+  aiInsights             AiInsight[]
+  goals                  Goal[]
+  emergencyFundSettings  EmergencyFundSettings?
+  emergencyFundHistory   EmergencyFundHistory[]
+  recurringItems         RecurringItem[]
   notificationCandidates NotificationCandidate[]
-  processedDocuments    ProcessedDocument[]
-  exchangeAudits        ExchangeAudit[]
-  notifications         Notification[]
-  workflowJobs          WorkflowJob[]
-  workflowHistory       WorkflowHistory[]
-  financialScenarios    FinancialScenario[]
-  assets                Asset[]
-  liabilities           Liability[]
-  portfolios            Portfolio[]
-  accounts              Account[]
-  syncHistories         SyncHistory[]
-  workspaceMembers      WorkspaceMember[]
-  workspaceInvitations  WorkspaceInvitation[]
-  conversations         Conversation[]
-  offlineSyncQueues     OfflineSyncQueue[]
+  processedDocuments     ProcessedDocument[]
+  exchangeAudits         ExchangeAudit[]
+  notifications          Notification[]
+  workflowJobs           WorkflowJob[]
+  workflowHistory        WorkflowHistory[]
+  financialScenarios     FinancialScenario[]
+  assets                 Asset[]
+  liabilities            Liability[]
+  portfolios             Portfolio[]
+  accounts               Account[]
+  syncHistories          SyncHistory[]
+  workspaceMembers       WorkspaceMember[]
+  workspaceInvitations   WorkspaceInvitation[]
+  conversations          Conversation[]
+  offlineSyncQueues      OfflineSyncQueue[]
+  Investment             Investment[]
+  WatchlistItem          WatchlistItem[]
 }
 
 model Goal {
-  id                            String             @id @default(cuid())
-  userId                        String
-  user                          User               @relation(fields: [userId], references: [id], onDelete: Cascade)
-  name                          String
-  description                   String?
-  targetAmount                  Decimal            @db.Decimal(12, 2)
-  currentAmount                 Decimal            @default(0) @db.Decimal(12, 2)
-  currency                      String             @default("USD")
-  deadline                      DateTime?
-  priority                      String             @default("medium")
-  status                        String             @default("active")
-  type                          String             @default("custom")
-  estimatedMonthlyContribution  Decimal?           @default(0) @db.Decimal(12, 2)
-  actualMonthlyContribution     Decimal?           @default(0) @db.Decimal(12, 2)
-  expectedCompletion            DateTime?
-  forecastCompletion            DateTime?
-  milestones                    GoalMilestone[]
-  contributions                 GoalContribution[]
-  workspaceId                   String?
-  workspace                     Workspace?         @relation(fields: [workspaceId], references: [id], onDelete: SetNull)
-  createdAt                     DateTime           @default(now())
-  updatedAt                     DateTime           @updatedAt
+  id                           String             @id @default(cuid())
+  userId                       String
+  user                         User               @relation(fields: [userId], references: [id], onDelete: Cascade)
+  name                         String
+  description                  String?
+  targetAmount                 Decimal            @db.Decimal(12, 2)
+  currentAmount                Decimal            @default(0) @db.Decimal(12, 2)
+  currency                     String             @default("USD")
+  deadline                     DateTime?
+  priority                     String             @default("medium")
+  status                       String             @default("active")
+  type                         String             @default("custom")
+  estimatedMonthlyContribution Decimal?           @default(0) @db.Decimal(12, 2)
+  actualMonthlyContribution    Decimal?           @default(0) @db.Decimal(12, 2)
+  expectedCompletion           DateTime?
+  forecastCompletion           DateTime?
+  milestones                   GoalMilestone[]
+  contributions                GoalContribution[]
+  workspaceId                  String?
+  workspace                    Workspace?         @relation(fields: [workspaceId], references: [id], onDelete: SetNull)
+  portfolioId                  String?
+  portfolio                    Portfolio?         @relation(fields: [portfolioId], references: [id], onDelete: SetNull)
+  createdAt                    DateTime           @default(now())
+  updatedAt                    DateTime           @updatedAt
 
   @@index([userId])
   @@index([userId, status])
@@ -125,19 +129,18 @@ model GoalContribution {
   @@index([goalId])
 }
 
-
 model Forecast {
-  id             String   @id @default(cuid())
-  userId         String
-  user           User     @relation(fields: [userId], references: [id], onDelete: Cascade)
-  period         String
-  scenario       String
-  type           String
-  data           Json
-  confidence     Float?
-  generatedAt    DateTime @default(now())
-  createdAt      DateTime @default(now())
-  updatedAt      DateTime @updatedAt
+  id          String   @id @default(cuid())
+  userId      String
+  user        User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  period      String
+  scenario    String
+  type        String
+  data        Json
+  confidence  Float?
+  generatedAt DateTime @default(now())
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
 
   @@index([userId, period, scenario])
 }
@@ -176,14 +179,14 @@ model Profile {
 }
 
 model UserSettings {
-  id                String   @id @default(cuid())
-  userId            String   @unique
-  user              User     @relation(fields: [userId], references: [id], onDelete: Cascade)
-  theme             Theme    @default(System)
-  emailNotifications Boolean @default(false)
-  aiInsightsEnabled Boolean  @default(true)
-  createdAt         DateTime @default(now())
-  updatedAt         DateTime @updatedAt
+  id                 String   @id @default(cuid())
+  userId             String   @unique
+  user               User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  theme              Theme    @default(System)
+  emailNotifications Boolean  @default(false)
+  aiInsightsEnabled  Boolean  @default(true)
+  createdAt          DateTime @default(now())
+  updatedAt          DateTime @updatedAt
 }
 
 model Category {
@@ -198,8 +201,8 @@ model Category {
   createdAt DateTime        @default(now())
   updatedAt DateTime        @updatedAt
 
-  transactions Transaction[]
-  budgets      Budget[]
+  transactions   Transaction[]
+  budgets        Budget[]
   recurringItems RecurringItem[]
 
   @@index([userId])
@@ -207,21 +210,21 @@ model Category {
 }
 
 model Transaction {
-  id          String           @id @default(cuid())
+  id          String            @id @default(cuid())
   userId      String
-  user        User             @relation(fields: [userId], references: [id], onDelete: Cascade)
+  user        User              @relation(fields: [userId], references: [id], onDelete: Cascade)
   categoryId  String?
-  category    Category?        @relation(fields: [categoryId], references: [id], onDelete: SetNull)
+  category    Category?         @relation(fields: [categoryId], references: [id], onDelete: SetNull)
   type        TransactionType
-  amount      Decimal          @db.Decimal(12, 2)
-  currency    String           @default("USD")
+  amount      Decimal           @db.Decimal(12, 2)
+  currency    String            @default("USD")
   description String?
-  date        DateTime         @default(now())
+  date        DateTime          @default(now())
   source      TransactionSource @default(Manual)
   workspaceId String?
-  workspace   Workspace?       @relation(fields: [workspaceId], references: [id], onDelete: SetNull)
-  createdAt   DateTime         @default(now())
-  updatedAt   DateTime         @updatedAt
+  workspace   Workspace?        @relation(fields: [workspaceId], references: [id], onDelete: SetNull)
+  createdAt   DateTime          @default(now())
+  updatedAt   DateTime          @updatedAt
 
   @@index([userId])
   @@index([userId, date])
@@ -230,60 +233,60 @@ model Transaction {
 }
 
 model Budget {
-  id         String        @id @default(cuid())
-  userId     String
-  user       User          @relation(fields: [userId], references: [id], onDelete: Cascade)
-  name       String
-  categoryId String?
-  category   Category?     @relation(fields: [categoryId], references: [id], onDelete: SetNull)
-  amount     Decimal       @db.Decimal(12, 2)
-  period     BudgetPeriod  @default(Monthly)
-  startDate  DateTime      @default(now())
+  id          String       @id @default(cuid())
+  userId      String
+  user        User         @relation(fields: [userId], references: [id], onDelete: Cascade)
+  name        String
+  categoryId  String?
+  category    Category?    @relation(fields: [categoryId], references: [id], onDelete: SetNull)
+  amount      Decimal      @db.Decimal(12, 2)
+  period      BudgetPeriod @default(Monthly)
+  startDate   DateTime     @default(now())
   workspaceId String?
-  workspace   Workspace?    @relation(fields: [workspaceId], references: [id], onDelete: SetNull)
-  createdAt  DateTime      @default(now())
-  updatedAt  DateTime @updatedAt
+  workspace   Workspace?   @relation(fields: [workspaceId], references: [id], onDelete: SetNull)
+  createdAt   DateTime     @default(now())
+  updatedAt   DateTime     @updatedAt
 
   @@index([userId])
   @@index([workspaceId])
 }
 
 model ScoreHistory {
-  id             String   @id @default(cuid())
-  userId         String
-  user           User     @relation(fields: [userId], references: [id], onDelete: Cascade)
-  month          String
-  score          Int
+  id              String   @id @default(cuid())
+  userId          String
+  user            User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  month           String
+  score           Int
   breakdown       Json
   recommendations Json
-  createdAt      DateTime @default(now())
-  updatedAt      DateTime @updatedAt
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
 
   @@unique([userId, month])
   @@index([userId])
 }
 
 model Recommendation {
-  id             String   @id @default(cuid())
+  id             String    @id @default(cuid())
   userId         String
-  user           User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  user           User      @relation(fields: [userId], references: [id], onDelete: Cascade)
   key            String
   category       String
   title          String
   summary        String
-  explanation     String
+  explanation    String
   reason         String
   evidence       String
-  monthlySavings Decimal  @db.Decimal(12,2)
-  annualSavings   Decimal  @db.Decimal(12,2)
+  monthlySavings Decimal   @db.Decimal(12, 2)
+  annualSavings  Decimal   @db.Decimal(12, 2)
   scoreImpact    Int
   difficulty     String
   priority       String
   confidence     String
   action         String
-  status         String   @default("active")
-  createdAt      DateTime @default(now())
-  updatedAt      DateTime @updatedAt
+  status         String    @default("active")
+  createdAt      DateTime  @default(now())
+  updatedAt      DateTime  @updatedAt
   expiresAt      DateTime?
   acceptedAt     DateTime?
   completedAt    DateTime?
@@ -307,7 +310,7 @@ model EmergencyFundHistory {
   id                String   @id @default(cuid())
   userId            String
   user              User     @relation(fields: [userId], references: [id], onDelete: Cascade)
-  month             String   // e.g. "2026-07"
+  month             String // e.g. "2026-07"
   coverageMonths    Decimal  @db.Decimal(6, 2)
   readinessScore    Int
   currentReserve    Decimal  @db.Decimal(12, 2)
@@ -318,24 +321,24 @@ model EmergencyFundHistory {
 }
 
 model RecurringItem {
-  id                   String        @id @default(cuid())
-  userId               String
-  user                 User          @relation(fields: [userId], references: [id], onDelete: Cascade)
-  categoryId           String?
-  category             Category?     @relation(fields: [categoryId], references: [id], onDelete: SetNull)
-  name                 String
-  type                 TransactionType
-  frequency            String        // "Daily", "Weekly", "Biweekly", "Monthly", "Quarterly", "Semi-Annual", "Annual", "Custom"
-  amount               Decimal       @db.Decimal(12, 2)
-  expectedNextDate     DateTime
-  lastPaidDate         DateTime?
-  status               String        @default("Active") // "Active", "Paused", "Completed", "Cancelled", "Overdue"
-  confidence           Float         @default(1.0)
-  isDetected           Boolean       @default(false)
-  workspaceId          String?
-  workspace            Workspace?    @relation(fields: [workspaceId], references: [id], onDelete: SetNull)
-  createdAt            DateTime      @default(now())
-  updatedAt            DateTime      @updatedAt
+  id               String          @id @default(cuid())
+  userId           String
+  user             User            @relation(fields: [userId], references: [id], onDelete: Cascade)
+  categoryId       String?
+  category         Category?       @relation(fields: [categoryId], references: [id], onDelete: SetNull)
+  name             String
+  type             TransactionType
+  frequency        String // "Daily", "Weekly", "Biweekly", "Monthly", "Quarterly", "Semi-Annual", "Annual", "Custom"
+  amount           Decimal         @db.Decimal(12, 2)
+  expectedNextDate DateTime
+  lastPaidDate     DateTime?
+  status           String          @default("Active") // "Active", "Paused", "Completed", "Cancelled", "Overdue"
+  confidence       Float           @default(1.0)
+  isDetected       Boolean         @default(false)
+  workspaceId      String?
+  workspace        Workspace?      @relation(fields: [workspaceId], references: [id], onDelete: SetNull)
+  createdAt        DateTime        @default(now())
+  updatedAt        DateTime        @updatedAt
 
   @@index([userId])
   @@index([userId, status])
@@ -350,7 +353,7 @@ model NotificationCandidate {
   body      String
   sendAt    DateTime
   status    String   @default("Pending") // "Pending", "Sent", "Failed"
-  type      String   // e.g. "recurring_payment_reminder"
+  type      String // e.g. "recurring_payment_reminder"
   createdAt DateTime @default(now())
 
   @@index([userId])
@@ -358,33 +361,33 @@ model NotificationCandidate {
 }
 
 model ProcessedDocument {
-  id               String   @id @default(cuid())
-  userId           String
-  user             User     @relation(fields: [userId], references: [id], onDelete: Cascade)
-  fileName         String
-  fileType         String   // "JPEG", "PNG", "WEBP", "PDF"
-  fileSize         Int
-  status           String   @default("uploaded") // "uploaded", "processing", "review_required", "confirmed", "failed"
-  extractedData    Json?    // Stores parsed fields and confidence scores
-  confidenceScore  Float    @default(0.0)
-  createdAt        DateTime @default(now())
-  updatedAt        DateTime @updatedAt
+  id              String   @id @default(cuid())
+  userId          String
+  user            User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  fileName        String
+  fileType        String // "JPEG", "PNG", "WEBP", "PDF"
+  fileSize        Int
+  status          String   @default("uploaded") // "uploaded", "processing", "review_required", "confirmed", "failed"
+  extractedData   Json? // Stores parsed fields and confidence scores
+  confidenceScore Float    @default(0.0)
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
 
   @@index([userId])
   @@index([userId, status])
 }
 
 model ExchangeAudit {
-  id               String   @id @default(cuid())
-  userId           String
-  user             User     @relation(fields: [userId], references: [id], onDelete: Cascade)
-  action           String   // "IMPORT", "EXPORT", "BACKUP", "RESTORE"
-  format           String   // "CSV", "JSON", "PDF"
-  dataset          String   // "Transactions", "Categories", "All", etc.
-  status           String   // "success", "failed"
-  recordCount      Int      @default(0)
-  errorMessage     String?
-  createdAt        DateTime @default(now())
+  id           String   @id @default(cuid())
+  userId       String
+  user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  action       String // "IMPORT", "EXPORT", "BACKUP", "RESTORE"
+  format       String // "CSV", "JSON", "PDF"
+  dataset      String // "Transactions", "Categories", "All", etc.
+  status       String // "success", "failed"
+  recordCount  Int      @default(0)
+  errorMessage String?
+  createdAt    DateTime @default(now())
 
   @@index([userId])
   @@index([userId, action])
@@ -396,7 +399,7 @@ model Notification {
   user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
   title     String
   body      String
-  type      String   // "info", "warning", "critical", "success", "reminder", "recommendation", "achievement"
+  type      String // "info", "warning", "critical", "success", "reminder", "recommendation", "achievement"
   isRead    Boolean  @default(false)
   createdAt DateTime @default(now())
 
@@ -405,18 +408,18 @@ model Notification {
 }
 
 model WorkflowJob {
-  id           String   @id @default(cuid())
+  id           String    @id @default(cuid())
   userId       String
-  user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  user         User      @relation(fields: [userId], references: [id], onDelete: Cascade)
   name         String
-  triggerType  String   // "EVENT" or "CRON"
-  triggerName  String   // e.g. "transaction.created" or "0 0 * * *"
-  status       String   @default("pending") // "pending", "running", "success", "failed"
-  runCount     Int      @default(0)
+  triggerType  String // "EVENT" or "CRON"
+  triggerName  String // e.g. "transaction.created" or "0 0 * * *"
+  status       String    @default("pending") // "pending", "running", "success", "failed"
+  runCount     Int       @default(0)
   lastRun      DateTime?
   nextRun      DateTime?
   errorMessage String?
-  createdAt    DateTime @default(now())
+  createdAt    DateTime  @default(now())
 
   @@index([userId])
   @@index([userId, status])
@@ -437,24 +440,24 @@ model WorkflowHistory {
 }
 
 model FinancialScenario {
-  id                    String   @id @default(cuid())
+  id                    String     @id @default(cuid())
   userId                String
-  user                  User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  user                  User       @relation(fields: [userId], references: [id], onDelete: Cascade)
   name                  String
-  type                  String   // e.g. "BuyHouse", "BuyVehicle", "Retirement", "Startup", etc.
+  type                  String // e.g. "BuyHouse", "BuyVehicle", "Retirement", "Startup", etc.
   description           String?
   startDate             DateTime
   durationMonths        Int
-  priority              String   // "high", "medium", "low"
-  assumptions           String?  // JSON stringified assumptions
-  estimatedCost         Decimal  @db.Decimal(18, 2)
-  expectedIncomeImpact  Decimal  @db.Decimal(18, 2)
-  expectedExpenseImpact Decimal  @db.Decimal(18, 2)
-  status                String   @default("Draft") // "Draft", "Planned", "Active", "Completed", "Archived", "Cancelled"
+  priority              String // "high", "medium", "low"
+  assumptions           String? // JSON stringified assumptions
+  estimatedCost         Decimal    @db.Decimal(18, 2)
+  expectedIncomeImpact  Decimal    @db.Decimal(18, 2)
+  expectedExpenseImpact Decimal    @db.Decimal(18, 2)
+  status                String     @default("Draft") // "Draft", "Planned", "Active", "Completed", "Archived", "Cancelled"
   workspaceId           String?
-  workspace             Workspace?            @relation(fields: [workspaceId], references: [id], onDelete: SetNull)
-  createdAt             DateTime @default(now())
-  updatedAt             DateTime @updatedAt
+  workspace             Workspace? @relation(fields: [workspaceId], references: [id], onDelete: SetNull)
+  createdAt             DateTime   @default(now())
+  updatedAt             DateTime   @updatedAt
 
   @@index([userId])
   @@index([userId, status])
@@ -462,23 +465,23 @@ model FinancialScenario {
 }
 
 model Asset {
-  id               String   @id @default(cuid())
+  id               String     @id @default(cuid())
   userId           String
-  user             User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  user             User       @relation(fields: [userId], references: [id], onDelete: Cascade)
   name             String
-  type             String   // e.g. "Cash", "SavingsAccount", "CheckingAccount", "FixedDeposit", "Gold", "RealEstate", "Vehicle", "Stock", "MutualFund", "Crypto", "Custom"
-  currentValue     Decimal  @db.Decimal(18, 2)
-  purchaseValue    Decimal  @db.Decimal(18, 2)
+  type             String // e.g. "Cash", "SavingsAccount", "CheckingAccount", "FixedDeposit", "Gold", "RealEstate", "Vehicle", "Stock", "MutualFund", "Crypto", "Custom"
+  currentValue     Decimal    @db.Decimal(18, 2)
+  purchaseValue    Decimal    @db.Decimal(18, 2)
   purchaseDate     DateTime
-  appreciationRate Decimal  @db.Decimal(5, 2) // annual percentage, e.g. 5.50
-  currency         String   @default("USD")
-  ownership        String   @default("100") // owned percentage
-  status           String   @default("Active") // "Active", "Sold", "Archived"
+  appreciationRate Decimal    @db.Decimal(5, 2) // annual percentage, e.g. 5.50
+  currency         String     @default("USD")
+  ownership        String     @default("100") // owned percentage
+  status           String     @default("Active") // "Active", "Sold", "Archived"
   notes            String?
   workspaceId      String?
   workspace        Workspace? @relation(fields: [workspaceId], references: [id], onDelete: SetNull)
-  createdAt        DateTime @default(now())
-  updatedAt        DateTime @updatedAt
+  createdAt        DateTime   @default(now())
+  updatedAt        DateTime   @updatedAt
 
   @@index([userId])
   @@index([userId, status])
@@ -486,27 +489,27 @@ model Asset {
 }
 
 model Liability {
-  id                 String   @id @default(cuid())
+  id                 String     @id @default(cuid())
   userId             String
-  user               User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  user               User       @relation(fields: [userId], references: [id], onDelete: Cascade)
   name               String
-  type               String   // e.g. "CreditCard", "PersonalLoan", "HomeLoan", "VehicleLoan", "EducationLoan", "Mortgage", "BNPL", "Custom"
-  originalAmount     Decimal  @db.Decimal(18, 2)
-  outstandingBalance Decimal  @db.Decimal(18, 2)
-  interestRate       Decimal  @db.Decimal(5, 2) // annual interest rate, e.g. 8.50
-  currency           String   @default("USD")
+  type               String // e.g. "CreditCard", "PersonalLoan", "HomeLoan", "VehicleLoan", "EducationLoan", "Mortgage", "BNPL", "Custom"
+  originalAmount     Decimal    @db.Decimal(18, 2)
+  outstandingBalance Decimal    @db.Decimal(18, 2)
+  interestRate       Decimal    @db.Decimal(5, 2) // annual interest rate, e.g. 8.50
+  currency           String     @default("USD")
   lender             String
-  emiAmount          Decimal  @db.Decimal(18, 2)
-  repaymentFrequency String   @default("Monthly") // "Monthly", "Weekly", "Biweekly"
+  emiAmount          Decimal    @db.Decimal(18, 2)
+  repaymentFrequency String     @default("Monthly") // "Monthly", "Weekly", "Biweekly"
   nextDueDate        DateTime
   startDate          DateTime
   endDate            DateTime
-  status             String   @default("Active") // "Active", "Closed", "Paused", "Overdue", "Defaulted", "Refinanced"
+  status             String     @default("Active") // "Active", "Closed", "Paused", "Overdue", "Defaulted", "Refinanced"
   notes              String?
   workspaceId        String?
   workspace          Workspace? @relation(fields: [workspaceId], references: [id], onDelete: SetNull)
-  createdAt          DateTime @default(now())
-  updatedAt          DateTime @updatedAt
+  createdAt          DateTime   @default(now())
+  updatedAt          DateTime   @updatedAt
 
   @@index([userId])
   @@index([userId, status])
@@ -514,37 +517,40 @@ model Liability {
 }
 
 model Portfolio {
-  id          String    @id @default(cuid())
+  id          String       @id @default(cuid())
   userId      String
-  user        User      @relation(fields: [userId], references: [id], onDelete: Cascade)
-  name        String    // e.g. "Personal", "Business", "Retirement"
+  user        User         @relation(fields: [userId], references: [id], onDelete: Cascade)
+  name        String // e.g. "Personal", "Business", "Retirement"
   description String?
-  createdAt   DateTime  @default(now())
-  updatedAt   DateTime  @updatedAt
+  createdAt   DateTime     @default(now())
+  updatedAt   DateTime     @updatedAt
   accounts    Account[]
+  Investment  Investment[]
+  Goal        Goal[]
 
   @@index([userId])
 }
 
 model Account {
-  id             String     @id @default(cuid())
+  id             String       @id @default(cuid())
   userId         String
-  user           User       @relation(fields: [userId], references: [id], onDelete: Cascade)
+  user           User         @relation(fields: [userId], references: [id], onDelete: Cascade)
   portfolioId    String?
-  portfolio      Portfolio? @relation(fields: [portfolioId], references: [id], onDelete: SetNull)
-  name           String     // e.g. "Cash Wallet", "Chase Savings", "Coinbase Crypto"
-  institution    String     // e.g. "Chase Bank", "Self"
-  type           String     // e.g. "CashWallet", "Checking", "Savings", "CreditCard", "Investment", "Crypto", "Custom"
-  currency       String     @default("USD")
-  openingBalance Decimal    @db.Decimal(18, 2)
-  currentBalance Decimal    @db.Decimal(18, 2)
-  status         String     @default("Active") // "Active", "Inactive", "Archived", "Closed", "PendingVerification"
-  owner          String     @default("Self")
-  metadata       String?    // JSON string description
+  portfolio      Portfolio?   @relation(fields: [portfolioId], references: [id], onDelete: SetNull)
+  name           String // e.g. "Cash Wallet", "Chase Savings", "Coinbase Crypto"
+  institution    String // e.g. "Chase Bank", "Self"
+  type           String // e.g. "CashWallet", "Checking", "Savings", "CreditCard", "Investment", "Crypto", "Custom"
+  currency       String       @default("USD")
+  openingBalance Decimal      @db.Decimal(18, 2)
+  currentBalance Decimal      @db.Decimal(18, 2)
+  status         String       @default("Active") // "Active", "Inactive", "Archived", "Closed", "PendingVerification"
+  owner          String       @default("Self")
+  metadata       String? // JSON string description
   workspaceId    String?
-  workspace      Workspace? @relation(fields: [workspaceId], references: [id], onDelete: SetNull)
-  createdAt      DateTime   @default(now())
-  updatedAt      DateTime   @updatedAt
+  workspace      Workspace?   @relation(fields: [workspaceId], references: [id], onDelete: SetNull)
+  createdAt      DateTime     @default(now())
+  updatedAt      DateTime     @updatedAt
+  Investment     Investment[]
 
   @@index([userId])
   @@index([portfolioId])
@@ -553,8 +559,8 @@ model Account {
 
 model ExchangeRate {
   id           String   @id @default(cuid())
-  fromCurrency String   // e.g. "EUR"
-  toCurrency   String   // e.g. "USD"
+  fromCurrency String // e.g. "EUR"
+  toCurrency   String // e.g. "USD"
   rate         Decimal  @db.Decimal(12, 6)
   date         DateTime @default(now())
   source       String   @default("Manual") // "Manual" or "Provider"
@@ -566,8 +572,8 @@ model SyncHistory {
   id              String    @id @default(cuid())
   userId          String
   user            User      @relation(fields: [userId], references: [id], onDelete: Cascade)
-  provider        String    // e.g. "MockProvider", "ManualCSV", "ManualJSON"
-  status          String    // "Started", "Completed", "Failed"
+  provider        String // e.g. "MockProvider", "ManualCSV", "ManualJSON"
+  status          String // "Started", "Completed", "Failed"
   startedAt       DateTime  @default(now())
   completedAt     DateTime?
   durationMs      Int?
@@ -582,22 +588,22 @@ model SyncHistory {
 }
 
 model Workspace {
-  id                 String                @id @default(cuid())
-  name               String
-  type               String                @default("Personal") // "Personal", "Couple", "Family", "Roommates", "Business", "Custom"
-  createdAt          DateTime              @default(now())
-  updatedAt          DateTime              @updatedAt
-  members            WorkspaceMember[]
-  invitations        WorkspaceInvitation[]
-  activityLogs       ActivityLog[]
-  transactions       Transaction[]
-  budgets            Budget[]
-  goals              Goal[]
-  accounts           Account[]
-  liabilities        Liability[]
-  assets             Asset[]
-  recurringItems     RecurringItem[]
-  scenarios          FinancialScenario[]
+  id             String                @id @default(cuid())
+  name           String
+  type           String                @default("Personal") // "Personal", "Couple", "Family", "Roommates", "Business", "Custom"
+  createdAt      DateTime              @default(now())
+  updatedAt      DateTime              @updatedAt
+  members        WorkspaceMember[]
+  invitations    WorkspaceInvitation[]
+  activityLogs   ActivityLog[]
+  transactions   Transaction[]
+  budgets        Budget[]
+  goals          Goal[]
+  accounts       Account[]
+  liabilities    Liability[]
+  assets         Asset[]
+  recurringItems RecurringItem[]
+  scenarios      FinancialScenario[]
 }
 
 model WorkspaceMember {
@@ -606,7 +612,7 @@ model WorkspaceMember {
   workspace   Workspace @relation(fields: [workspaceId], references: [id], onDelete: Cascade)
   userId      String
   user        User      @relation(fields: [userId], references: [id], onDelete: Cascade)
-  role        String    // "Owner", "Administrator", "Editor", "Contributor", "Viewer", "Guest"
+  role        String // "Owner", "Administrator", "Editor", "Contributor", "Viewer", "Guest"
   createdAt   DateTime  @default(now())
   updatedAt   DateTime  @updatedAt
 
@@ -620,8 +626,8 @@ model WorkspaceInvitation {
   workspaceId String
   workspace   Workspace @relation(fields: [workspaceId], references: [id], onDelete: Cascade)
   email       String
-  role        String    // "Owner", "Administrator", "Editor", "Contributor", "Viewer", "Guest"
-  status      String    // "Pending", "Accepted", "Declined", "Expired", "Revoked"
+  role        String // "Owner", "Administrator", "Editor", "Contributor", "Viewer", "Guest"
+  status      String // "Pending", "Accepted", "Declined", "Expired", "Revoked"
   invitedById String
   invitedBy   User      @relation(fields: [invitedById], references: [id], onDelete: Cascade)
   createdAt   DateTime  @default(now())
@@ -636,7 +642,7 @@ model ActivityLog {
   workspaceId String
   workspace   Workspace @relation(fields: [workspaceId], references: [id], onDelete: Cascade)
   userId      String
-  action      String    // e.g. "Join", "CreateTransaction", "UpdateBudget"
+  action      String // e.g. "Join", "CreateTransaction", "UpdateBudget"
   details     String
   createdAt   DateTime  @default(now())
 
@@ -659,9 +665,9 @@ model Message {
   id             String       @id @default(cuid())
   conversationId String
   conversation   Conversation @relation(fields: [conversationId], references: [id], onDelete: Cascade)
-  role           String       // "user" | "assistant"
+  role           String // "user" | "assistant"
   content        String
-  feedback       String?      // "Like" | "Dislike"
+  feedback       String? // "Like" | "Dislike"
   createdAt      DateTime     @default(now())
 
   @@index([conversationId])
@@ -671,10 +677,68 @@ model OfflineSyncQueue {
   id        String   @id @default(cuid())
   userId    String
   user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
-  action    String   // "CreateTransaction", "UpdateBudget", etc.
-  payload   String   // JSON string
+  action    String // "CreateTransaction", "UpdateBudget", etc.
+  payload   String // JSON string
   status    String   @default("Pending") // "Pending", "Synced", "Failed"
   createdAt DateTime @default(now())
+
+  @@index([userId])
+}
+
+model Investment {
+  id            String     @id @default(cuid())
+  userId        String
+  user          User       @relation(fields: [userId], references: [id], onDelete: Cascade)
+  name          String
+  assetClass    String // e.g. "Stocks", "ETFs", "Gold", "Bonds", etc.
+  ticker        String?
+  accountId     String?
+  account       Account?   @relation(fields: [accountId], references: [id], onDelete: SetNull)
+  portfolioId   String?
+  portfolio     Portfolio? @relation(fields: [portfolioId], references: [id], onDelete: SetNull)
+  purchaseDate  DateTime
+  purchasePrice Float
+  quantity      Float
+  currentValue  Float
+  currency      String
+  fees          Float      @default(0.0)
+  notes         String?
+  status        String     @default("Active") // "Active", "Sold", "Archived"
+  createdAt     DateTime   @default(now())
+  updatedAt     DateTime   @updatedAt
+  dividends     Dividend[]
+
+  @@index([userId])
+  @@index([portfolioId])
+}
+
+model Dividend {
+  id                 String     @id @default(cuid())
+  investmentId       String
+  investment         Investment @relation(fields: [investmentId], references: [id], onDelete: Cascade)
+  dividendDate       DateTime
+  amount             Float
+  currency           String
+  taxWithheld        Float      @default(0.0)
+  reinvestmentStatus String     @default("Payout") // "Payout", "Reinvested"
+  createdAt          DateTime   @default(now())
+  updatedAt          DateTime   @updatedAt
+
+  @@index([investmentId])
+}
+
+model WatchlistItem {
+  id          String   @id @default(cuid())
+  userId      String
+  user        User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  name        String
+  ticker      String?
+  targetPrice Float?
+  priority    String   @default("Medium") // "High", "Medium", "Low"
+  notes       String?
+  status      String   @default("Active") // "Active", "Inactive"
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
 
   @@index([userId])
 }

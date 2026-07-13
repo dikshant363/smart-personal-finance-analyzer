@@ -10,6 +10,7 @@ export const navItems: NavItem[] = [
   { href: "/currency", label: "Currency Desk", icon: "ArrowLeftRight" },
   { href: "/connectors", label: "Sync Hub", icon: "RefreshCw" },
   { href: "/workspaces", label: "Workspaces", icon: "Users" },
+  { href: "/investments", label: "Investments", icon: "TrendingUp" },
   { href: "/copilot", label: "AI Copilot", icon: "Sparkles" },
   { href: "/offline", label: "Offline Sync", icon: "WifiOff" },
   { href: "/transactions", label: "Transactions", icon: "ArrowLeftRight" },
