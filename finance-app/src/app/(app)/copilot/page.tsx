@@ -2,7 +2,7 @@ import { redirect } from "next/navigation";
 import { getCurrentUser } from "@/lib/auth";
 import { prisma } from "@/lib/prisma";
 import { CopilotEngine } from "@/lib/copilot";
-import { CopilotClient } from "@/components/copilot/copilot-client";
+import { CopilotClient } from "@/components/copilot/CopilotClient";
 
 export default async function CopilotPage() {
   const user = await getCurrentUser();

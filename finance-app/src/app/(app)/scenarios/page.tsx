@@ -2,7 +2,7 @@ import { redirect } from "next/navigation";
 import { getCurrentUser } from "@/lib/auth";
 import { prisma } from "@/lib/prisma";
 import { compareScenarios, getScenarioAiExplanation } from "@/lib/scenario";
-import { ScenarioClient } from "@/components/scenarios/scenario-client";
+import { ScenarioClient } from "@/components/scenarios/ScenarioClient";
 import { toNumber } from "@/lib/currency";
 
 export default async function ScenariosPage() {

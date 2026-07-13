@@ -1,5 +1,5 @@
 import { Metadata } from "next";
-import DeveloperClient from "@/components/developer/developer-client";
+import DeveloperClient from "@/components/developer/DeveloperClient";
 
 export const metadata: Metadata = {
   title: "Developer command deck | Smart Personal Finance Analyzer",

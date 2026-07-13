@@ -1,7 +1,7 @@
 import { redirect } from "next/navigation";
 import { getCurrentUser } from "@/lib/auth";
 import { prisma } from "@/lib/prisma";
-import { CategoriesClient } from "@/components/categories/categories-client";
+import { CategoriesClient } from "@/components/categories/CategoriesClient";
 
 export default async function Page() {
   const user = await getCurrentUser();

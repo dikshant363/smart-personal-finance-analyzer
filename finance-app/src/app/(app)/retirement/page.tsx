@@ -1,5 +1,5 @@
 import { Metadata } from "next";
-import RetirementClient from "@/components/retirement/retirement-client";
+import RetirementClient from "@/components/retirement/RetirementClient";
 
 export const metadata: Metadata = {
   title: "Retirement & Long-Term Planning | Smart Personal Finance Analyzer",

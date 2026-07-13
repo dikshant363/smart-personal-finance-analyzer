@@ -8,7 +8,7 @@ import {
   getRecurringForecast,
   detectRecurringTransactions
 } from "@/lib/recurring";
-import { RecurringClient } from "@/components/recurring/recurring-client";
+import { RecurringClient } from "@/components/recurring/RecurringClient";
 
 export default async function RecurringPage() {
   const user = await getCurrentUser();

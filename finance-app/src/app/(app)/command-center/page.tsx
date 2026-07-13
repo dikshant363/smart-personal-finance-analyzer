@@ -1,5 +1,5 @@
 import { Metadata } from "next";
-import CommandCenterClient from "@/components/command-center/command-center-client";
+import CommandCenterClient from "@/components/command-center/CommandCenterClient";
 
 export const metadata: Metadata = {
   title: "IFOS Command Center | Smart Personal Finance Analyzer",
