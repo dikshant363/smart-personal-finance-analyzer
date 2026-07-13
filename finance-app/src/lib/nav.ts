@@ -16,6 +16,7 @@ export const navItems: NavItem[] = [
   { href: "/risk", label: "Risk Management", icon: "Shield" },
   { href: "/collaboration", label: "Collaboration Desk", icon: "Users" },
   { href: "/command-center", label: "Command Center", icon: "LayoutGrid" },
+  { href: "/intelligence-hub", label: "Intelligence Hub", icon: "Lightbulb" },
   { href: "/agents", label: "AI Orchestrator", icon: "Cpu" },
   { href: "/developer", label: "Developer Tools", icon: "Code" },
   { href: "/copilot", label: "AI Copilot", icon: "Sparkles" },
