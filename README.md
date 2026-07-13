@@ -1,6 +1,6 @@
-# Smart Personal Finance Analyzer — India-First Multi-Platform Experience Platform (MPEP)
+# Smart Personal Finance Analyzer — DOS (Dikshant Open Source) Foundation
 
-This is the root of the **Smart Personal Finance Analyzer** monorepo, housing all platform applications and shared packages, configured by default for India-First operations.
+This is the root of the **Smart Personal Finance Analyzer** monorepo, housing all platform applications and shared packages under the DOS (Dikshant Open Source) Foundation.
 
 ---
 

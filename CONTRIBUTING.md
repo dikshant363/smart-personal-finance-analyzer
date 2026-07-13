@@ -1,4 +1,4 @@
-# Contributing to Smart Personal Finance Analyzer
+# Contributing to the DOS (Dikshant Open Source) Foundation
 
 Welcome! We are excited to have you contribute.
 
