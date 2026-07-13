@@ -23,6 +23,7 @@ export default function CollaborationClient() {
 
   useEffect(() => {
     fetchCollaborationData();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   async function fetchCollaborationData() {

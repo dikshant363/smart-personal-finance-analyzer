@@ -676,6 +676,8 @@ model Message {
   role           String // "user" | "assistant"
   content        String
   feedback       String? // "Like" | "Dislike"
+  agentType      String? // e.g. "Budget Coach"
+  tokenUsage     Int?
   createdAt      DateTime     @default(now())
 
   @@index([conversationId])
